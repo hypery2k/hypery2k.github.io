@@ -1,4 +1,6 @@
-hypery2k.github.io
-====================
+# My Blog.
 
-Welcome to the GitHub.io page of Martin Reinhardt
+
+# Credits
+
+Based on the work of [Pascal Precht](https://github.com/PascalPrecht/pascalprecht.github.io)
