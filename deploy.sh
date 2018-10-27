@@ -24,6 +24,6 @@ git subtree split -P public -b deploy-dist
 # Push source and build repos.
 git push -f origin deploy-dist:master
 git branch -D deploy-dist
-git checkout dev
+git checkout develop
 git branch -D deploy
 
