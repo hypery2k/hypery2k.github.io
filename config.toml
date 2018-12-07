@@ -46,20 +46,26 @@ pygmentscodefencesguesssyntax = true # Enable syntax guessing for code fences wi
     weight = 3
     url = "https://stackoverflow.com/users/2490834/hypery2k?tab=profile"
 [[params.social]]
+    name = "Packt Publishing"
+    icon = "fab fa-graduation-cap"
+    weight = 4
+    url = "https://www.packtpub.com/books/info/authors/martin-reinhardt"
+[[params.social]]
     name = "Medium"
     icon = "fab fa-medium"
-    weight = 4
+    weight = 5
     url = "https://medium.com/@mreinhardt"
 [[params.social]]
     name = "Keybase"
     icon = "fab fa-keybase"
-    weight = 5
+    weight = 6
     url = "https://keybase.io/hypery2k"
 [[params.social]]
     name = "Homepage"
     icon = "fab fa-html5"
-    weight = 6
+    weight = 7
     url = "https://martinreinhardt-online.de"
+
 
 # Menu links
 [[menu.main]]
