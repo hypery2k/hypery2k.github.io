@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Martin Reinhardt</title>
+    <link>https://hypery2k.github.io/</link>
+    <description>Recent content on Martin Reinhardt</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Sat, 27 Oct 2018 13:09:47 +0200</lastBuildDate>
+    
+	<atom:link href="https://hypery2k.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>https://hypery2k.github.io/why-i-use-vim/</link>
+      <pubDate>Sat, 27 Oct 2018 13:09:47 +0200</pubDate>
+      
+      <guid>https://hypery2k.github.io/why-i-use-vim/</guid>
+      <description>Hi there.
+I have been involved in Open Source projects and the Software-Craftsmanship movement for years. I was mainly involved with DevOps, automation and modern web architectures.
+Martin</description>
+    </item>
+    
+  </channel>
+</rss>
