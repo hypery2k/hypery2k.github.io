@@ -67,7 +67,7 @@ pygmentscodefencesguesssyntax = true # Enable syntax guessing for code fences wi
     url = "https://keybase.io/hypery2k"
 [[params.social]]
     name = "CV"
-    icon = "fab fa-file"
+    icon = "fas fa-user-tie"
     weight = 8
     url = "http://martinreinhardt-online.de/en/cv/resume.html"
 [[params.social]]
