@@ -56,15 +56,34 @@ pygmentscodefencesguesssyntax = true # Enable syntax guessing for code fences wi
     weight = 5
     url = "https://medium.com/@mreinhardt"
 [[params.social]]
+    name = "YouTube"
+    icon = "fab fa-youtube"
+    weight = 6
+    url = "https://www.youtube.com/playlist?list=PL2bgi8_0R1dFZ9DNpp3Wxnl07eLh8Edr-"
+[[params.social]]
     name = "Keybase"
     icon = "fab fa-keybase"
-    weight = 6
+    weight = 7
     url = "https://keybase.io/hypery2k"
+[[params.social]]
+    name = "CV"
+    icon = "fab fa-file"
+    weight = 8
+    url = "http://martinreinhardt-online.de/en/cv/resume.html"
 [[params.social]]
     name = "Homepage"
     icon = "fab fa-html5"
-    weight = 7
+    weight = 9
     url = "https://martinreinhardt-online.de"
+
+
+
+
+          "network": "Packt Publishing",
+          "username": "martin-reinhardt",
+          "url": "https://www.packtpub.com/books/info/authors/martin-reinhardt"
+
+
 
 
 # Menu links
@@ -72,4 +91,3 @@ pygmentscodefencesguesssyntax = true # Enable syntax guessing for code fences wi
     name = "About"
     weight = 2
     url = "/about/"
-
