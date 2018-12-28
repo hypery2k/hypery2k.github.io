@@ -75,17 +75,6 @@ pygmentscodefencesguesssyntax = true # Enable syntax guessing for code fences wi
     icon = "fab fa-html5"
     weight = 9
     url = "https://martinreinhardt-online.de"
-
-
-
-
-          "network": "Packt Publishing",
-          "username": "martin-reinhardt",
-          "url": "https://www.packtpub.com/books/info/authors/martin-reinhardt"
-
-
-
-
 # Menu links
 [[menu.main]]
     name = "About"
