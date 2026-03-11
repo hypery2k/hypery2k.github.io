@@ -802,7 +802,7 @@ function App() {
             <div style={{ fontFamily:"'Syne', sans-serif", fontWeight:800, fontSize:26, color:"#e2e8f0", letterSpacing:1 }}>
               CEH <span style={{ color:"#38bdf8" }} className="glow-text">v12</span>
             </div>
-            <div style={{ fontSize:10, color:"#334155", letterSpacing:4, marginTop:2, fontFamily:"'Syne Mono', monospace" }}>
+            <div style={{ fontSize:15, color:"#334155", letterSpacing:4, marginTop:2, fontFamily:"'Syne Mono', monospace" }}>
               FLASHCARD TRAINER · {CARDS.length} QUESTIONS · 312-50
             </div>
           </div>
@@ -817,8 +817,8 @@ function App() {
         {/* Progress */}
         <div style={{ marginTop:12 }}>
           <div style={{ display:"flex", justifyContent:"space-between", marginBottom:4 }}>
-            <span style={{ fontSize:10, color:"#334155", letterSpacing:2 }}>PROGRESS</span>
-            <span style={{ fontSize:10, color:"#38bdf8", fontFamily:"'Syne Mono',monospace" }}>{progress}%</span>
+            <span style={{ fontSize:15, color:"#334155", letterSpacing:2 }}>PROGRESS</span>
+            <span style={{ fontSize:15, color:"#38bdf8", fontFamily:"'Syne Mono',monospace" }}>{progress}%</span>
           </div>
           <div style={{ height:3, background:"#0f172a", borderRadius:2, overflow:"hidden" }}>
             <div style={{ height:"100%", width:`${progress}%`, background:"linear-gradient(90deg,#38bdf8,#4ade80)", borderRadius:2, transition:"width 0.5s ease" }} />
@@ -828,7 +828,7 @@ function App() {
 
       {/* ── DOMAIN BANNER ── */}
       <div style={{ width:"100%", maxWidth:820, marginBottom:14 }}>
-        <div style={{ fontSize:9, color:"#334155", letterSpacing:3, fontFamily:"'Syne Mono',monospace", marginBottom:6 }}>EXAM DOMAIN FOCUS:</div>
+        <div style={{ fontSize:13, color:"#334155", letterSpacing:3, fontFamily:"'Syne Mono',monospace", marginBottom:6 }}>EXAM DOMAIN FOCUS:</div>
         <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:6 }}>
           {/* All domains */}
           {(() => {
@@ -840,12 +840,12 @@ function App() {
                 border: `1px solid ${isActive ? "#38bdf855" : "#1e293b"}`,
                 borderRadius:8, padding:"8px 6px", cursor:"pointer", textAlign:"left",
               }}>
-                <div style={{ fontSize:9, color: isActive ? "#38bdf8" : "#475569", fontFamily:"'Syne Mono',monospace", fontWeight:"bold", marginBottom:2 }}>ALL</div>
-                <div style={{ fontSize:8, color:"#334155", fontFamily:"'Syne Mono',monospace", marginBottom:4 }}>200 questions</div>
+                <div style={{ fontSize:13, color: isActive ? "#38bdf8" : "#475569", fontFamily:"'Syne Mono',monospace", fontWeight:"bold", marginBottom:2 }}>ALL</div>
+                <div style={{ fontSize:12, color:"#334155", fontFamily:"'Syne Mono',monospace", marginBottom:4 }}>200 questions</div>
                 <div style={{ height:2, background:"#0f172a", borderRadius:1 }}>
                   <div style={{ height:"100%", width:`${CARDS.length>0?Math.round((totalKnown/CARDS.length)*100):0}%`, background:"#38bdf8", borderRadius:1, transition:"width 0.4s" }} />
                 </div>
-                <div style={{ fontSize:8, color:"#38bdf8", fontFamily:"'Syne Mono',monospace", marginTop:3 }}>{totalKnown}/{CARDS.length} known</div>
+                <div style={{ fontSize:12, color:"#38bdf8", fontFamily:"'Syne Mono',monospace", marginTop:3 }}>{totalKnown}/{CARDS.length} known</div>
               </button>
             );
           })()}
@@ -861,20 +861,20 @@ function App() {
                 borderRadius:8, padding:"8px 6px", cursor:"pointer", textAlign:"left",
               }}>
                 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:2 }}>
-                  <div style={{ fontSize:9, color: isActive ? d.color : "#475569", fontFamily:"'Syne Mono',monospace", fontWeight:"bold", lineHeight:1.3 }}>{d.label}</div>
-                  <div style={{ fontSize:9, color: d.color, fontFamily:"'Syne Mono',monospace", opacity:0.8, flexShrink:0, marginLeft:4 }}>{d.weight}</div>
+                  <div style={{ fontSize:13, color: isActive ? d.color : "#475569", fontFamily:"'Syne Mono',monospace", fontWeight:"bold", lineHeight:1.3 }}>{d.label}</div>
+                  <div style={{ fontSize:13, color: d.color, fontFamily:"'Syne Mono',monospace", opacity:0.8, flexShrink:0, marginLeft:4 }}>{d.weight}</div>
                 </div>
-                <div style={{ fontSize:8, color:"#334155", fontFamily:"'Syne Mono',monospace", marginBottom:4, lineHeight:1.3 }}>{domCards.length} questions</div>
+                <div style={{ fontSize:12, color:"#334155", fontFamily:"'Syne Mono',monospace", marginBottom:4, lineHeight:1.3 }}>{domCards.length} questions</div>
                 <div style={{ height:2, background:"#0f172a", borderRadius:1 }}>
                   <div style={{ height:"100%", width:`${pct}%`, background:d.color, borderRadius:1, transition:"width 0.4s" }} />
                 </div>
-                <div style={{ fontSize:8, color:d.color, fontFamily:"'Syne Mono',monospace", marginTop:3 }}>{domKnown}/{domCards.length} known</div>
+                <div style={{ fontSize:12, color:d.color, fontFamily:"'Syne Mono',monospace", marginTop:3 }}>{domKnown}/{domCards.length} known</div>
               </button>
             );
           })}
         </div>
         {activeDomain && (
-          <div style={{ marginTop:6, fontSize:9, color: activeDomain.color, fontFamily:"'Syne Mono',monospace", opacity:0.7 }}>
+          <div style={{ marginTop:6, fontSize:13, color: activeDomain.color, fontFamily:"'Syne Mono',monospace", opacity:0.7 }}>
             ↳ {activeDomain.desc}
           </div>
         )}
@@ -884,7 +884,7 @@ function App() {
       <div style={{ width:"100%", maxWidth:820, marginBottom:16 }}>
         {/* Difficulty */}
         <div style={{ display:"flex", gap:6, marginBottom:8, flexWrap:"wrap" }}>
-          <span style={{ fontSize:10, color:"#334155", letterSpacing:2, alignSelf:"center", marginRight:4 }}>DIFFICULTY:</span>
+          <span style={{ fontSize:15, color:"#334155", letterSpacing:2, alignSelf:"center", marginRight:4 }}>DIFFICULTY:</span>
           {DIFFS.map(d => (
             <button key={d} className="catpill" onClick={() => { setSelDiff(d); setIdx(0); setFlipped(false); }} style={{
               padding:"3px 12px", borderRadius:20, fontSize:11, cursor:"pointer", border:"1px solid",
@@ -906,7 +906,7 @@ function App() {
             const catKnown = catCards.filter(c=>known.has(c.id)).length;
             return (
               <button key={cat} className="catpill" onClick={() => { setSelCat(cat); setIdx(0); setFlipped(false); }} style={{
-                padding:"3px 10px", borderRadius:20, fontSize:10, cursor:"pointer", border:"1px solid",
+                padding:"3px 10px", borderRadius:20, fontSize:15, cursor:"pointer", border:"1px solid",
                 fontFamily:"'Syne Mono',monospace",
                 background: active ? `${col}22` : "transparent",
                 color: active ? col : "#475569",
@@ -926,13 +926,13 @@ function App() {
         </div>
         <div style={{ display:"flex", gap:8, alignItems:"center" }}>
           <span style={{ fontFamily:"'Syne Mono',monospace", fontSize:11, color:catColor }}>{card.cat}</span>
-          <span style={{ fontFamily:"'Syne Mono',monospace", fontSize:10, color:diffColor, background:`${diffColor}15`, padding:"2px 8px", borderRadius:10, border:`1px solid ${diffColor}33` }}>
+          <span style={{ fontFamily:"'Syne Mono',monospace", fontSize:15, color:diffColor, background:`${diffColor}15`, padding:"2px 8px", borderRadius:10, border:`1px solid ${diffColor}33` }}>
             {DIFF_LABELS[card.diff]}
           </span>
-          {known.has(card.id) && <span style={{ fontSize:10, color:"#4ade80", background:"#4ade8011", padding:"2px 8px", borderRadius:10, border:"1px solid #4ade8030" }}>✓ known</span>}
-          {review.has(card.id) && <span style={{ fontSize:10, color:"#fbbf24", background:"#fbbf2411", padding:"2px 8px", borderRadius:10, border:"1px solid #fbbf2430" }}>⚑ review</span>}
+          {known.has(card.id) && <span style={{ fontSize:15, color:"#4ade80", background:"#4ade8011", padding:"2px 8px", borderRadius:10, border:"1px solid #4ade8030" }}>✓ known</span>}
+          {review.has(card.id) && <span style={{ fontSize:15, color:"#fbbf24", background:"#fbbf2411", padding:"2px 8px", borderRadius:10, border:"1px solid #fbbf2430" }}>⚑ review</span>}
         </div>
-        <button className="btn" onClick={() => { const r = Math.floor(Math.random()*filtered.length); setIdx(r); setFlipped(false); }} style={{ background:"transparent", border:"1px solid #0f172a", borderRadius:6, padding:"3px 10px", fontSize:10, color:"#334155", cursor:"pointer", fontFamily:"'Syne Mono',monospace" }}>⟳ random</button>
+        <button className="btn" onClick={() => { const r = Math.floor(Math.random()*filtered.length); setIdx(r); setFlipped(false); }} style={{ background:"transparent", border:"1px solid #0f172a", borderRadius:6, padding:"3px 10px", fontSize:15, color:"#334155", cursor:"pointer", fontFamily:"'Syne Mono',monospace" }}>⟳ random</button>
       </div>
 
       {/* ── FLIP CARD ── */}
@@ -948,14 +948,14 @@ function App() {
             <div className="scanline" />
             <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:16 }}>
               <div style={{ width:6, height:6, borderRadius:"50%", background:catColor, boxShadow:`0 0 10px ${catColor}` }} />
-              <span style={{ fontSize:9, color:catColor, letterSpacing:4, fontFamily:"'Syne Mono',monospace" }}>QUESTION #{card.id}</span>
+              <span style={{ fontSize:13, color:catColor, letterSpacing:4, fontFamily:"'Syne Mono',monospace" }}>QUESTION #{card.id}</span>
             </div>
             <div style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"center" }}>
               <div style={{ fontSize:16, lineHeight:1.8, color:"#cbd5e1", textAlign:"center", fontFamily:"'Syne Mono',monospace", maxWidth:680 }}>
                 {card.q}
               </div>
             </div>
-            <div style={{ textAlign:"center", fontSize:9, color:"#1e293b", letterSpacing:3, fontFamily:"'Syne Mono',monospace" }}>CLICK TO REVEAL</div>
+            <div style={{ textAlign:"center", fontSize:13, color:"#1e293b", letterSpacing:3, fontFamily:"'Syne Mono',monospace" }}>CLICK TO REVEAL</div>
           </div>
 
           {/* Back */}
@@ -969,14 +969,14 @@ function App() {
             <div className="scanline" />
             <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:16 }}>
               <div style={{ width:6, height:6, borderRadius:"50%", background:"#4ade80", boxShadow:"0 0 10px #4ade80" }} />
-              <span style={{ fontSize:9, color:"#4ade80", letterSpacing:4, fontFamily:"'Syne Mono',monospace" }}>ANSWER</span>
+              <span style={{ fontSize:13, color:"#4ade80", letterSpacing:4, fontFamily:"'Syne Mono',monospace" }}>ANSWER</span>
             </div>
             <div style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"center", overflowY:"auto" }}>
               <div style={{ fontSize:14, lineHeight:1.9, color:"#86efac", textAlign:"center", fontFamily:"'Syne Mono',monospace", whiteSpace:"pre-wrap", maxWidth:700 }}>
                 {card.a}
               </div>
             </div>
-            <div style={{ textAlign:"center", fontSize:9, color:"#166534", letterSpacing:3, fontFamily:"'Syne Mono',monospace", marginTop:12 }}>CLICK TO RETURN</div>
+            <div style={{ textAlign:"center", fontSize:13, color:"#166534", letterSpacing:3, fontFamily:"'Syne Mono',monospace", marginTop:12 }}>CLICK TO RETURN</div>
           </div>
         </div>
       </div>
@@ -999,8 +999,8 @@ function App() {
           return (
             <div key={cat} className="catpill" onClick={() => { setSelCat(cat); setIdx(0); setFlipped(false); }} style={{ background:"#0d1117", border:`1px solid ${col}15`, borderRadius:8, padding:"8px 10px", cursor:"pointer" }}>
               <div style={{ display:"flex", justifyContent:"space-between", marginBottom:5 }}>
-                <span style={{ fontSize:10, color:col, fontFamily:"'Syne Mono',monospace" }}>{cat}</span>
-                <span style={{ fontSize:9, color:"#1e293b", fontFamily:"'Syne Mono',monospace" }}>{catKnown}/{catCards.length}</span>
+                <span style={{ fontSize:15, color:col, fontFamily:"'Syne Mono',monospace" }}>{cat}</span>
+                <span style={{ fontSize:13, color:"#1e293b", fontFamily:"'Syne Mono',monospace" }}>{catKnown}/{catCards.length}</span>
               </div>
               <div style={{ height:2, background:"#0f172a", borderRadius:1 }}>
                 <div style={{ height:"100%", width:`${pct}%`, background:col, borderRadius:1, transition:"width 0.4s ease", opacity:0.8 }} />
@@ -1010,7 +1010,7 @@ function App() {
         })}
       </div>
 
-      <div style={{ marginTop:28, fontSize:9, color:"#0f172a", letterSpacing:3, fontFamily:"'Syne Mono',monospace" }}>
+      <div style={{ marginTop:28, fontSize:13, color:"#0f172a", letterSpacing:3, fontFamily:"'Syne Mono',monospace" }}>
         EC-COUNCIL 312-50v12 · {CARDS.length} EXAM-PATTERN QUESTIONS
       </div>
     </div>
