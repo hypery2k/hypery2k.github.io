@@ -811,10 +811,10 @@ function App() {
             </div>
           </div>
           <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
-            <div style={{ background:"#0f2a1a", border:"1px solid #166534", borderRadius:8, padding:"5px 12px", fontSize:11, color:"#4ade80", fontFamily:"'Syne Mono',monospace" }}>✓ {known.size} known</div>
-            <div style={{ background:"#2a1a00", border:"1px solid #713f12", borderRadius:8, padding:"5px 12px", fontSize:11, color:"#fbbf24", fontFamily:"'Syne Mono',monospace" }}>⚑ {review.size} review</div>
-            <button className="btn" onClick={() => setOnlyReview(r => !r)} style={{ background: onlyReview ? "#fbbf2422" : "transparent", border:"1px solid " + (onlyReview ? "#fbbf2466" : "#1e293b"), borderRadius:8, padding:"5px 12px", fontSize:11, color: onlyReview ? "#fbbf24" : "#475569", cursor:"pointer", fontFamily:"'Syne Mono',monospace" }}>Review Mode</button>
-            <button className="btn" onClick={() => { setKnown(new Set()); setReview(new Set()); setIdx(0); setFlipped(false); setSelDomain("all"); setSelCat("All"); setSelDiff("All"); try { localStorage.removeItem(LS_KEY); } catch(e) {} }} style={{ background:"transparent", border:"1px solid #1e293b", borderRadius:8, padding:"5px 12px", fontSize:11, color:"#475569", cursor:"pointer", fontFamily:"'Syne Mono',monospace" }}>Reset</button>
+            <div style={{ background:"#0f2a1a", border:"1px solid #166534", borderRadius:8, padding:"5px 12px", fontSize:15, color:"#4ade80", fontFamily:"'Syne Mono',monospace" }}>✓ {known.size} known</div>
+            <div style={{ background:"#2a1a00", border:"1px solid #713f12", borderRadius:8, padding:"5px 12px", fontSize:15, color:"#fbbf24", fontFamily:"'Syne Mono',monospace" }}>⚑ {review.size} review</div>
+            <button className="btn" onClick={() => setOnlyReview(r => !r)} style={{ background: onlyReview ? "#fbbf2422" : "transparent", border:"1px solid " + (onlyReview ? "#fbbf2466" : "#1e293b"), borderRadius:8, padding:"5px 12px", fontSize:15, color: onlyReview ? "#fbbf24" : "#475569", cursor:"pointer", fontFamily:"'Syne Mono',monospace" }}>Review Mode</button>
+            <button className="btn" onClick={() => { setKnown(new Set()); setReview(new Set()); setIdx(0); setFlipped(false); setSelDomain("all"); setSelCat("All"); setSelDiff("All"); try { localStorage.removeItem(LS_KEY); } catch(e) {} }} style={{ background:"transparent", border:"1px solid #1e293b", borderRadius:8, padding:"5px 12px", fontSize:15, color:"#475569", cursor:"pointer", fontFamily:"'Syne Mono',monospace" }}>Reset</button>
           </div>
         </div>
 
@@ -891,7 +891,7 @@ function App() {
           <span style={{ fontSize:15, color:"#334155", letterSpacing:2, alignSelf:"center", marginRight:4 }}>DIFFICULTY:</span>
           {DIFFS.map(d => (
             <button key={d} className="catpill" onClick={() => { setSelDiff(d); setIdx(0); setFlipped(false); }} style={{
-              padding:"3px 12px", borderRadius:20, fontSize:11, cursor:"pointer", border:"1px solid",
+              padding:"3px 12px", borderRadius:20, fontSize:15, cursor:"pointer", border:"1px solid",
               fontFamily:"'Syne Mono',monospace", letterSpacing:0.5,
               background: selDiff===d ? `${d==="All"?"#38bdf8":DIFF_COLORS[d]}22` : "transparent",
               color: selDiff===d ? (d==="All"?"#38bdf8":DIFF_COLORS[d]) : "#334155",
@@ -899,17 +899,19 @@ function App() {
             }}>{d==="All" ? "All" : DIFF_LABELS[d]}</button>
           ))}
         </div>
-        {/* Categories — filtered to active domain */}
+        {/* Categories — filtered to active domain; "All" resets to full deck */}
         <div style={{ display:"flex", gap:5, flexWrap:"wrap" }}>
           {CATEGORIES.filter(cat => cat === "All" || !domainCats || domainCats.includes(cat)).map(cat => {
             const col = cat==="All" ? "#38bdf8" : (CAT_COLORS[cat]||"#94a3b8");
             const active = selCat===cat;
-            const catCards = cat==="All"
-              ? (domainCats ? CARDS.filter(c => domainCats.includes(c.cat)) : CARDS)
-              : CARDS.filter(c=>c.cat===cat);
+            // "All" always counts the full 200, domain pills count their own cards
+            const catCards = cat==="All" ? CARDS : CARDS.filter(c=>c.cat===cat);
             const catKnown = catCards.filter(c=>known.has(c.id)).length;
             return (
-              <button key={cat} className="catpill" onClick={() => { setSelCat(cat); setIdx(0); setFlipped(false); }} style={{
+              <button key={cat} className="catpill" onClick={() => {
+                if (cat === "All") { switchDomain("all"); } // reset domain too
+                else { setSelCat(cat); setIdx(0); setFlipped(false); }
+              }} style={{
                 padding:"3px 10px", borderRadius:20, fontSize:15, cursor:"pointer", border:"1px solid",
                 fontFamily:"'Syne Mono',monospace",
                 background: active ? `${col}22` : "transparent",
@@ -925,11 +927,11 @@ function App() {
 
       {/* ── CARD META ── */}
       <div style={{ width:"100%", maxWidth:820, display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:8 }}>
-        <div style={{ fontFamily:"'Syne Mono',monospace", fontSize:11, color:"#1e293b" }}>
+        <div style={{ fontFamily:"'Syne Mono',monospace", fontSize:15, color:"#1e293b" }}>
           {safeIdx+1} <span style={{ color:"#0f172a" }}>/</span> {total}
         </div>
         <div style={{ display:"flex", gap:8, alignItems:"center" }}>
-          <span style={{ fontFamily:"'Syne Mono',monospace", fontSize:11, color:catColor }}>{card.cat}</span>
+          <span style={{ fontFamily:"'Syne Mono',monospace", fontSize:15, color:catColor }}>{card.cat}</span>
           <span style={{ fontFamily:"'Syne Mono',monospace", fontSize:15, color:diffColor, background:`${diffColor}15`, padding:"2px 8px", borderRadius:10, border:`1px solid ${diffColor}33` }}>
             {DIFF_LABELS[card.diff]}
           </span>
@@ -988,8 +990,8 @@ function App() {
       {/* ── CONTROLS ── */}
       <div style={{ width:"100%", maxWidth:820, display:"flex", gap:8, justifyContent:"center", alignItems:"center", flexWrap:"wrap" }}>
         <button className="btn" onClick={() => go(-1)} style={{ background:"#0f172a", border:"1px solid #1e293b", borderRadius:12, padding:"13px 20px", fontSize:18, color:"#475569", cursor:"pointer" }}>←</button>
-        <button className="btn" onClick={markReview} style={{ flex:1, maxWidth:200, background:"#2a1a0011", border:"1px solid #fbbf2433", borderRadius:12, padding:"13px 16px", fontSize:11, color:"#fbbf24", cursor:"pointer", fontFamily:"'Syne Mono',monospace", letterSpacing:1 }}>⚑ NEEDS REVIEW</button>
-        <button className="btn" onClick={markKnown} style={{ flex:1, maxWidth:200, background:"#0a1a0f11", border:"1px solid #4ade8033", borderRadius:12, padding:"13px 16px", fontSize:11, color:"#4ade80", cursor:"pointer", fontFamily:"'Syne Mono',monospace", letterSpacing:1 }}>✓ GOT IT</button>
+        <button className="btn" onClick={markReview} style={{ flex:1, maxWidth:200, background:"#2a1a0011", border:"1px solid #fbbf2433", borderRadius:12, padding:"13px 16px", fontSize:15, color:"#fbbf24", cursor:"pointer", fontFamily:"'Syne Mono',monospace", letterSpacing:1 }}>⚑ NEEDS REVIEW</button>
+        <button className="btn" onClick={markKnown} style={{ flex:1, maxWidth:200, background:"#0a1a0f11", border:"1px solid #4ade8033", borderRadius:12, padding:"13px 16px", fontSize:15, color:"#4ade80", cursor:"pointer", fontFamily:"'Syne Mono',monospace", letterSpacing:1 }}>✓ GOT IT</button>
         <button className="btn" onClick={() => go(1)} style={{ background:"#0f172a", border:"1px solid #1e293b", borderRadius:12, padding:"13px 20px", fontSize:18, color:"#475569", cursor:"pointer" }}>→</button>
       </div>
 
